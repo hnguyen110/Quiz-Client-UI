@@ -149,6 +149,18 @@
   display: block;
 }
 
+.inline{
+  display: inline;
+}
+
+.h-screen{
+  height: 100vh;
+}
+
+.w-full{
+  width: 100%;
+}
+
 .px-4{
   padding-left: 1rem;
   padding-right: 1rem;
