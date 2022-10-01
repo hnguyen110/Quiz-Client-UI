@@ -12,7 +12,7 @@ export default function SignIn() {
             name="username"
             rules={[{ required: true, message: "This field can not be empty" }]}
           >
-            <Input />
+            <Input placeholder="Please enter your username" />
           </Form.Item>
 
           <Form.Item
@@ -21,7 +21,7 @@ export default function SignIn() {
             name="password"
             rules={[{ required: true, message: "This field can not be empty" }]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Please enter your password" />
           </Form.Item>
 
           <Form.Item>
