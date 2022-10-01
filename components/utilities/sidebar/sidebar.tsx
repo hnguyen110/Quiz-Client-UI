@@ -14,28 +14,13 @@ export default function Sidebar() {
           key: 2,
           label: (
             <Link href="/account/profile-information">
-              Manage Profile Information
+              View Profile Information
             </Link>
           ),
         },
-      ],
-    },
-    {
-      key: 3,
-      icon: <FileProtectOutlined />,
-      label: "Survey",
-      children: [
         {
-          key: 4,
-          label: <Link href="/survey/manage-survey">Manage Surveys</Link>,
-        },
-        {
-          key: 5,
-          label: (
-            <Link href="/survey/view-assigned-surveys">
-              View Assigned Surveys
-            </Link>
-          ),
+          key: 3,
+          label: <Link href="/account/change-password">Change Password</Link>,
         },
       ],
     },
