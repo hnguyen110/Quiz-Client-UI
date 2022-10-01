@@ -7,3 +7,7 @@
 * {
   font-family: "Open Sans", sans-serif;
 }
+
+.ant-drawer-right > .ant-drawer-content-wrapper {
+  box-shadow: none;
+}

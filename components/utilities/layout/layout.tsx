@@ -1,5 +1,4 @@
 import { Col, Row } from "antd";
-import { useRouter } from "next/router";
 import Sidebar from "../sidebar/sidebar";
 
 interface Props {
@@ -7,8 +6,6 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
-  const router = useRouter();
-
   return (
     <Row>
       <Col xs={0} sm={0} md={6}>
