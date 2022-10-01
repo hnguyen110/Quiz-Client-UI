@@ -24,6 +24,21 @@ export default function Sidebar() {
         },
       ],
     },
+    {
+      key: 4,
+      icon: <UserOutlined />,
+      label: "Quizzes",
+      children: [
+        {
+          key: 5,
+          label: (
+            <Link href="/quizzes/view-assigned-quizzes">
+              View Assigned Quizzes
+            </Link>
+          ),
+        },
+      ],
+    },
   ];
 
   return (
@@ -31,7 +46,7 @@ export default function Sidebar() {
       className="w-full h-screen"
       mode="inline"
       theme="light"
-      defaultOpenKeys={["1", "3"]}
+      defaultOpenKeys={["1", "4"]}
       defaultSelectedKeys={["2"]}
       items={items}
     />
