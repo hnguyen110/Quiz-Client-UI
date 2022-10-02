@@ -1,15 +1,39 @@
-import { Checkbox, Radio, Space, Typography } from "antd";
+import { Alert, Checkbox, Radio, Space, Typography } from "antd";
 import Question from "../../../utilities/types/quizzes/question";
 
 interface Props {
   question: Question;
+  resultOnly: boolean;
 }
 
-export default function QuizQuestion({ question }: Props) {
+export default function QuizQuestion({ question, resultOnly }: Props) {
+  const solutions = question.selected_solution?.map((item) => item.id);
+
   return (
-    <Space direction="vertical">
+    <Space direction="vertical" className="w-full">
       <Typography.Text strong>{question.description}</Typography.Text>
-      {question.type === "single_choice" ? (
+      {resultOnly ? (
+        <Space direction="vertical" className="w-full">
+          {question.solutions.map((item) => (
+            <Alert
+              showIcon
+              key={item.id}
+              className="w-full"
+              message={item.description}
+              type={
+                item.isCorrect
+                  ? "success"
+                  : solutions?.includes(item.id)
+                  ? solutions?.includes(item.id) && item.isCorrect
+                    ? "success"
+                    : "error"
+                  : "info"
+              }
+            />
+          ))}
+        </Space>
+      ) : null}
+      {!resultOnly && question.type === "single_choice" ? (
         <Radio.Group>
           <Space direction="vertical">
             {question.solutions.map((item) => (
@@ -20,7 +44,7 @@ export default function QuizQuestion({ question }: Props) {
           </Space>
         </Radio.Group>
       ) : null}
-      {question.type === "multiple_choice" ? (
+      {!resultOnly && question.type === "multiple_choice" ? (
         <Checkbox.Group>
           <Space direction="vertical">
             {question.solutions.map((item) => (

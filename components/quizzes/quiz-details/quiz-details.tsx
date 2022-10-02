@@ -7,7 +7,7 @@ interface Props {
   title: string;
   width: string | number;
   open: boolean;
-  withSolution?: boolean;
+  withResults?: boolean;
   questions: Question[];
   onCloseHandler: any;
 }
@@ -16,7 +16,7 @@ export default function QuizDetails({
   title,
   width,
   open,
-  withSolution = false,
+  withResults = false,
   questions,
   onCloseHandler,
 }: Props) {
@@ -33,7 +33,7 @@ export default function QuizDetails({
         dataSource={questions}
         renderItem={(item) => (
           <List.Item>
-            <QuizQuestion question={item} />
+            <QuizQuestion resultOnly question={item} />
           </List.Item>
         )}
       />

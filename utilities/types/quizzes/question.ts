@@ -5,4 +5,5 @@ export default interface Question {
   type: string;
   description: string;
   solutions: Solution[];
+  selected_solution?: Solution[];
 }

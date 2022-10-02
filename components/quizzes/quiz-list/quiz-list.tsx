@@ -25,7 +25,47 @@ export default function QuizList({ title, open, setOpen, quizzes }: Props) {
         width={"100%"}
         open={open}
         onCloseHandler={() => setOpen(false)}
-        questions={[]}
+        questions={[
+          {
+            id: 1,
+            description: "What is RDS",
+            type: "single_choice",
+            solutions: [
+              {
+                id: 1,
+                description: "Relational Database",
+                isCorrect: true,
+              },
+              {
+                id: 2,
+                description: "Non-Relational Database",
+                isCorrect: false,
+              },
+              {
+                id: 3,
+                description: "New Database",
+                isCorrect: true,
+              },
+              {
+                id: 4,
+                description: "This is not a real database",
+                isCorrect: false,
+              },
+            ],
+            selected_solution: [
+              {
+                id: 1,
+                description: "Relational Database",
+                isCorrect: true,
+              },
+              {
+                id: 2,
+                description: "Relational Database",
+                isCorrect: false,
+              },
+            ],
+          },
+        ]}
       />
       <Card
         title={title}
