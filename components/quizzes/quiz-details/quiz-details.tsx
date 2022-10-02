@@ -1,5 +1,5 @@
 import { List } from "antd";
-import Question from "../../../utilities/types/quizzes/question";
+import Question from "../../../utilities/types/quizzes/question.type";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
 import QuizQuestion from "../quiz-question/quiz-question";
 

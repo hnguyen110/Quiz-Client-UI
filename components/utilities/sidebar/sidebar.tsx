@@ -26,7 +26,7 @@ export default function Sidebar() {
     },
     {
       key: 4,
-      icon: <UserOutlined />,
+      icon: <FileProtectOutlined />,
       label: "Quizzes",
       children: [
         {

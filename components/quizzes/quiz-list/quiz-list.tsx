@@ -1,6 +1,6 @@
 import { Card, Col, List, Row } from "antd";
 import { useState } from "react";
-import Quiz from "../../../utilities/types/quizzes/quiz";
+import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import QuizDetails from "../quiz-details/quiz-details";
 
 interface Props {

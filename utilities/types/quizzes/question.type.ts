@@ -1,4 +1,4 @@
-import Solution from "./solution";
+import Solution from "./solution.type";
 
 export default interface Question {
   id: number;

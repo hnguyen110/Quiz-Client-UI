@@ -1,4 +1,5 @@
 import { Button, Col, Form, Input, Row, Typography } from "antd";
+import Link from "next/link";
 
 export default function SignIn() {
   return (
@@ -29,6 +30,10 @@ export default function SignIn() {
               Sign In
             </Button>
           </Form.Item>
+
+          <Link href="/auth/sign-up">
+            Do not have an account yet? Sign up here.
+          </Link>
         </Form>
       </Col>
     </Row>

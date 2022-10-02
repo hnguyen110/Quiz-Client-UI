@@ -1,5 +1,5 @@
 import { Alert, Checkbox, Radio, Space, Typography } from "antd";
-import Question from "../../../utilities/types/quizzes/question";
+import Question from "../../../utilities/types/quizzes/question.type";
 
 interface Props {
   question: Question;
