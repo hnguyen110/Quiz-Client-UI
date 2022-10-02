@@ -1,5 +1,5 @@
-import AssignedQuizzes from "../../../components/quizzes/assigned-quizzes/assigned-quizzes";
+import AssignedQuizzList from "../../../components/quizzes/assigned-quizz-list/assigned-quizz-list";
 
 export default function Index() {
-  return <AssignedQuizzes />;
+  return <AssignedQuizzList />;
 }

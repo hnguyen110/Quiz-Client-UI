@@ -37,6 +37,14 @@ export default function Sidebar() {
             </Link>
           ),
         },
+        {
+          key: 6,
+          label: (
+            <Link href="/quizzes/view-submitted-quizzes">
+              View Submitted Quizzes
+            </Link>
+          ),
+        },
       ],
     },
   ];
