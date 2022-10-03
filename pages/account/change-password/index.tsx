@@ -2,9 +2,9 @@ import ChangePassword from "../../../components/account/change-password/change-p
 import AuthenticationGuard from "../../../components/utilities/authentication-guard/authentication-guard";
 
 export default function Index() {
-  return (
-    <AuthenticationGuard>
-      <ChangePassword />
-    </AuthenticationGuard>
-  );
+    return (
+        <AuthenticationGuard>
+            <ChangePassword/>
+        </AuthenticationGuard>
+    );
 }

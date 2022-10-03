@@ -2,9 +2,9 @@ import AssignedQuizzList from "../../../components/quizzes/assigned-quizz-list/a
 import AuthenticationGuard from "../../../components/utilities/authentication-guard/authentication-guard";
 
 export default function Index() {
-  return (
-    <AuthenticationGuard>
-      <AssignedQuizzList />
-    </AuthenticationGuard>
-  );
+    return (
+        <AuthenticationGuard>
+            <AssignedQuizzList/>
+        </AuthenticationGuard>
+    );
 }

@@ -149,10 +149,6 @@
   margin: auto;
 }
 
-.mt-16{
-  margin-top: 4rem;
-}
-
 .block{
   display: block;
 }
@@ -173,20 +169,12 @@
   width: 100%;
 }
 
-.items-center{
-  align-items: center;
-}
-
 .justify-center{
   justify-content: center;
 }
 
 .overflow-y-auto{
   overflow-y: auto;
-}
-
-.p-8{
-  padding: 2rem;
 }
 
 .px-4{
@@ -200,14 +188,6 @@
 
 .pt-16{
   padding-top: 4rem;
-}
-
-.pt-14{
-  padding-top: 3.5rem;
-}
-
-.pt-1{
-  padding-top: 0.25rem;
 }
 
 * {
