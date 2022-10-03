@@ -15,7 +15,7 @@ export default function SignUp() {
             router.replace("/auth/sign-in");
         } catch (e) {
             message.error(
-                "There was a an issue during the sign-up process, please try again"
+                "There was an issue during the sign-up process, please try again"
             );
         }
     }
