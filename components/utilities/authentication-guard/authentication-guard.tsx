@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import GenericSkeleton from "../generic-skeleton/generic-skeleton";
-import { Spin } from "antd";
+import { Space, Spin } from "antd";
 
 interface Props {
   children: any;
@@ -16,7 +16,9 @@ export default function AuthenticationGuard({ children }: Props) {
     getSession()
       .then((session: any) => {
         if (session) {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
         } else {
           setTimeout(() => {
             router.replace("/auth/sign-in");
@@ -31,7 +33,11 @@ export default function AuthenticationGuard({ children }: Props) {
   }, [router]);
 
   return loading ? (
-    <Spin size="large" className="flex justify-center pt-14" />
+    <Space className="flex justify-center pt-16" size="middle">
+      <Spin size="small" />
+      <Spin />
+      <Spin size="large" />
+    </Space>
   ) : (
     children
   );

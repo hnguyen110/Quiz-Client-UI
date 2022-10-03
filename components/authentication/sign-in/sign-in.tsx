@@ -1,9 +1,12 @@
 import { Button, Col, Form, Input, message, Row, Typography } from "antd";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import SignInParameters from "../../../utilities/parameters/authentication/sign-in.parameters";
 
 export default function SignIn() {
+  const router = useRouter();
+
   async function onFinishHandler(data: SignInParameters) {
     const result = await signIn("credentials", {
       username: data.username,
@@ -16,6 +19,7 @@ export default function SignIn() {
       );
     } else {
       message.success("The sign-in process is successful");
+      router.replace("/account/profile-information");
     }
   }
 
