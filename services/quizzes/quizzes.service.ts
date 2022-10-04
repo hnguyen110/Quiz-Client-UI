@@ -13,3 +13,18 @@ export async function getAssignedQuizzes(session: Session): Promise<Quiz[]> {
   );
   return data;
 }
+
+export async function getAssignedQuizDetails(
+  session: Session,
+  id: number
+): Promise<Quiz> {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${id}/assigned-quiz-details/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}

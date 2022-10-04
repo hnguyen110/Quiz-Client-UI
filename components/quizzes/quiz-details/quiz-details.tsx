@@ -33,7 +33,7 @@ export default function QuizDetails({
                 dataSource={questions}
                 renderItem={(item) => (
                     <List.Item>
-                        <QuizQuestion resultOnly question={item}/>
+                        <QuizQuestion resultOnly={false} question={item}/>
                     </List.Item>
                 )}
             />

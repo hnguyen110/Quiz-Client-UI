@@ -17,7 +17,7 @@ export default function ProfileInformation() {
       })
       .catch((e) => {
         message.error(
-          "There was an issue while trying to receive your profile information, please try again"
+          "There was an issue while trying to retrieve your profile information, please try again"
         );
       });
   }, [form]);
