@@ -1,7 +1,12 @@
 import { Button, Card, Col, List, message, Row } from "antd";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { getAssignedQuizDetails } from "../../../services/quizzes/quizzes.service";
+import { useContext, useState } from "react";
+import { QuizzesContext } from "../../../contexts/quizzes.context";
+import {
+  getAssignedQuizDetails,
+  submitAssignedQuiz,
+} from "../../../services/quizzes/quizzes.service";
+import AssignedQuiz from "../../../utilities/types/quizzes/assigned-quiz.type";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import QuizDetails from "../quiz-details/quiz-details";
 
@@ -9,11 +14,11 @@ interface Props {
   title: string;
   open: boolean;
   setOpen: any;
-  quizzes: Quiz[];
 }
 
-export default function QuizList({ title, open, setOpen, quizzes }: Props) {
+export default function QuizList({ title, open, setOpen }: Props) {
   const [quiz, setQuiz] = useState(null as null | Quiz);
+  const { answers, quizzes, setQuizzes } = useContext(QuizzesContext);
   const session = useSession();
 
   async function onQuizSelectedHandler(data: Quiz) {
@@ -31,13 +36,47 @@ export default function QuizList({ title, open, setOpen, quizzes }: Props) {
     }
   }
 
+  async function onCloseHandler() {
+    setOpen(false);
+  }
+
+  async function onFinishHandler() {
+    let ids = Array.from(
+      new Set(
+        answers.map((item) => {
+          return item.question;
+        })
+      )
+    );
+    if (ids.length === quiz?.questions.length) {
+      try {
+        const { id } = quizzes.find(
+          (item) => item.quiz.id === quiz.id
+        ) as AssignedQuiz;
+        await submitAssignedQuiz(session.data as any, quiz.id, id, answers);
+        setQuizzes(quizzes.filter((item) => item.quiz.id !== quiz.id));
+        setOpen(false);
+        message.success("The quiz submission process is successful");
+      } catch (e) {
+        message.error(
+          "There was an issue during the quiz submission process, please try again"
+        );
+      }
+    } else {
+      message.error(
+        "Some questions are not answered yet, please provide your answers to these questions and try again"
+      );
+    }
+  }
+
   return (
-    <div>
+    <>
       <QuizDetails
         title={quiz?.title ?? ""}
         width={"100%"}
         open={open}
-        onCloseHandler={() => setOpen(false)}
+        onCloseHandler={onCloseHandler}
+        onFinishHandler={onFinishHandler}
         questions={quiz?.questions ?? []}
       />
       <Card
@@ -49,7 +88,7 @@ export default function QuizList({ title, open, setOpen, quizzes }: Props) {
           <Col xs={24} sm={24} md={24}>
             <List
               itemLayout="horizontal"
-              dataSource={quizzes}
+              dataSource={quizzes.map((item) => item.quiz)}
               renderItem={(item) => (
                 <List.Item
                   onClick={() => {
@@ -71,6 +110,6 @@ export default function QuizList({ title, open, setOpen, quizzes }: Props) {
           </Col>
         </Row>
       </Card>
-    </div>
+    </>
   );
 }
