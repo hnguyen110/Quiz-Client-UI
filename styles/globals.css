@@ -5,5 +5,13 @@
 @tailwind utilities;
 
 * {
-  font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", sans-serif;
+}
+
+.ant-drawer-right > .ant-drawer-content-wrapper {
+    box-shadow: none;
+}
+
+.ant-menu-sub.ant-menu-inline {
+    background: white;
 }
