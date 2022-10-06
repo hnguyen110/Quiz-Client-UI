@@ -1,4 +1,5 @@
 import {Col, Row} from "antd";
+import {useSession} from "next-auth/react";
 import Sidebar from "../sidebar/sidebar";
 
 interface Props {
@@ -6,7 +7,9 @@ interface Props {
 }
 
 export default function Layout({children}: Props) {
-    return (
+    const session = useSession();
+
+    return session.data ? (
         <Row>
             <Col xs={0} sm={0} md={6}>
                 <Sidebar/>
@@ -15,5 +18,7 @@ export default function Layout({children}: Props) {
                 <main className="w-full">{children}</main>
             </Col>
         </Row>
+    ) : (
+        <main className="w-full">{children}</main>
     );
 }

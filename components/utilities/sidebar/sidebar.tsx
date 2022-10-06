@@ -1,7 +1,6 @@
 import {FileProtectOutlined, UserOutlined} from "@ant-design/icons";
-import {Button, Menu} from "antd";
+import {Menu} from "antd";
 import {ItemType} from "antd/lib/menu/hooks/useItems";
-import {signOut} from "next-auth/react";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -44,20 +43,6 @@ export default function Sidebar() {
                         <Link href="/quizzes/view-submitted-quizzes">
                             View Submitted Quizzes
                         </Link>
-                    ),
-                },
-                {
-                    key: 7,
-                    label: (
-                        <Button
-                            onClick={() => {
-                                signOut();
-                            }}
-                            type="primary"
-                            danger
-                        >
-                            Sign Out
-                        </Button>
                     ),
                 },
             ],
