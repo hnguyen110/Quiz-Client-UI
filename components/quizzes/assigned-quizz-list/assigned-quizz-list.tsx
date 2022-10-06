@@ -18,7 +18,6 @@ export default function AssignedQuizzList() {
   const [open, setOpen] = useState(false);
   const [quiz, setQuiz] = useState(null as null | Quiz);
   const [quizzes, setQuizzes] = useState([] as AssignedQuiz[]);
-
   const session = useSession();
 
   useEffect(() => {
