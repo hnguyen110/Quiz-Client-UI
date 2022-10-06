@@ -1,44 +1,61 @@
-import {Button, Drawer, Space} from "antd";
+import { Button, Drawer, Popconfirm, Space, Typography } from "antd";
 
 interface Props {
-    title: string;
-    placement: "top" | "bottom" | "right" | "left";
-    width: string | number;
-    open: boolean;
-    onCloseHandler: any;
-    children: any;
+  title: string;
+  placement: "top" | "bottom" | "right" | "left";
+  width: string | number;
+  open: boolean;
+  onCloseHandler: any;
+  onFinishHandler: any;
+  children: any;
 }
 
 export default function GenericDrawer({
-                                          title,
-                                          placement,
-                                          width,
-                                          open,
-                                          onCloseHandler,
-                                          children,
-                                      }: Props) {
-    return (
-        <Drawer
-            title={title}
-            placement={placement}
-            width={width}
-            open={open}
-            onClose={onCloseHandler}
-            mask={false}
-            getContainer={false}
-            className="absolute"
-            extra={
-                <Space>
-                    <Button type="primary" danger onClick={onCloseHandler}>
-                        Cancel
-                    </Button>
-                    <Button type="primary" onClick={onCloseHandler}>
-                        Save And Submit
-                    </Button>
-                </Space>
-            }
-        >
-            {children}
-        </Drawer>
-    );
+  title,
+  placement,
+  width,
+  open,
+  onCloseHandler,
+  onFinishHandler,
+  children,
+}: Props) {
+  return (
+    <Drawer
+      title={title}
+      placement={placement}
+      width={width}
+      open={open}
+      onClose={onCloseHandler}
+      mask={false}
+      getContainer={false}
+      className="absolute"
+      extra={
+        <Space>
+          <Popconfirm
+            placement="bottomRight"
+            title="Please confirm again that you would like to cancel the quiz"
+            onConfirm={onCloseHandler}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger>
+              Cancel
+            </Button>
+          </Popconfirm>
+
+          <Popconfirm
+            placement="bottomRight"
+            title="Please confirm again that you would like to save and submit the quiz"
+            onConfirm={onFinishHandler}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary">Save And Submit</Button>
+          </Popconfirm>
+        </Space>
+      }
+    >
+      {children}
+    </Drawer>
+  );
 }

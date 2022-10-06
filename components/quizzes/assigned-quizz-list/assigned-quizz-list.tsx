@@ -1,13 +1,16 @@
 import { message } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { QuizzesContext } from "../../../contexts/quizzes.context";
 import { getAssignedQuizzes } from "../../../services/quizzes/quizzes.service";
-import Quiz from "../../../utilities/types/quizzes/quiz.type";
+import Answer from "../../../utilities/types/quizzes/answer.type";
+import AssignedQuiz from "../../../utilities/types/quizzes/assigned-quiz.type";
 import QuizList from "../quiz-list/quiz-list";
 
 export default function AssignedQuizzList() {
+  const [answers, setAnswers] = useState([] as Answer[]);
   const [open, setOpen] = useState(false);
-  const [quizzes, setQuizzes] = useState([] as Quiz[]);
+  const [quizzes, setQuizzes] = useState([] as AssignedQuiz[]);
   const session = useSession();
 
   useEffect(() => {
@@ -23,11 +26,15 @@ export default function AssignedQuizzList() {
   }, [session.data]);
 
   return (
-    <QuizList
-      title="Assigned Quizzes"
-      open={open}
-      setOpen={setOpen}
-      quizzes={quizzes}
-    />
+    <QuizzesContext.Provider
+      value={{ answers, setAnswers, quizzes, setQuizzes }}
+    >
+      <QuizList
+        title="Assigned Quizzes"
+        open={open}
+        setOpen={setOpen}
+        quizzes={quizzes}
+      />
+    </QuizzesContext.Provider>
   );
 }

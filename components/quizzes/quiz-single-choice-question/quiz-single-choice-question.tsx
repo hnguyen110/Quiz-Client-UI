@@ -1,6 +1,6 @@
 import { Radio, RadioChangeEvent, Space } from "antd";
 import { useContext } from "react";
-import { QuizAnswersContext } from "../../../contexts/quiz-answers.context";
+import { QuizzesContext } from "../../../contexts/quizzes.context";
 import Question from "../../../utilities/types/quizzes/question.type";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function QuizSingleChoiceQuestion({ question }: Props) {
-  const { answers, setAnswers } = useContext(QuizAnswersContext);
+  const { answers, setAnswers } = useContext(QuizzesContext);
 
   function onChangeHandler(event: RadioChangeEvent) {
     const answer = answers.find((item) => item.question === question.id);

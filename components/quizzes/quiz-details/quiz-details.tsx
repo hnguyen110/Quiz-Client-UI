@@ -1,7 +1,4 @@
 import { List } from "antd";
-import { useState } from "react";
-import { QuizAnswersContext } from "../../../contexts/quiz-answers.context";
-import Answer from "../../../utilities/types/quizzes/answer.type";
 import Question from "../../../utilities/types/quizzes/question.type";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
 import QuizQuestion from "../quiz-question/quiz-question";
@@ -13,6 +10,7 @@ interface Props {
   resultOnly?: boolean;
   questions: Question[];
   onCloseHandler: any;
+  onFinishHandler: any;
 }
 
 export default function QuizDetails({
@@ -22,11 +20,8 @@ export default function QuizDetails({
   resultOnly = false,
   questions,
   onCloseHandler,
+  onFinishHandler,
 }: Props) {
-  const [answers, setAnswers] = useState([] as Answer[]);
-
-  console.log(answers);
-
   return (
     <GenericDrawer
       title={title}
@@ -34,18 +29,17 @@ export default function QuizDetails({
       width={width}
       open={open}
       onCloseHandler={onCloseHandler}
+      onFinishHandler={onFinishHandler}
     >
-      <QuizAnswersContext.Provider value={{ answers, setAnswers }}>
-        <List
-          itemLayout="horizontal"
-          dataSource={questions}
-          renderItem={(item) => (
-            <List.Item>
-              <QuizQuestion resultOnly={resultOnly} question={item} />
-            </List.Item>
-          )}
-        />
-      </QuizAnswersContext.Provider>
+      <List
+        itemLayout="horizontal"
+        dataSource={questions}
+        renderItem={(item) => (
+          <List.Item>
+            <QuizQuestion resultOnly={resultOnly} question={item} />
+          </List.Item>
+        )}
+      />
     </GenericDrawer>
   );
 }
