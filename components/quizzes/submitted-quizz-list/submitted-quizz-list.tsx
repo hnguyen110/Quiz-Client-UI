@@ -8,12 +8,6 @@ export default function SubmittedQuizzList() {
             title="Submitted Quizzes"
             open={open}
             setOpen={setOpen}
-            quizzes={[
-                {
-                    title: "AWS Final",
-                    description: "AWS Final Quiz",
-                },
-            ]}
         />
     );
 }
