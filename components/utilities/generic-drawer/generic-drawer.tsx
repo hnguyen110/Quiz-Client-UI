@@ -6,7 +6,7 @@ interface Props {
     width: string | number;
     open: boolean;
     onCloseHandler: any;
-    onFinishHandler: any;
+    onFinishHandler?: any;
     children: any;
 }
 
@@ -33,7 +33,7 @@ export default function GenericDrawer({
                 <Space>
                     <Popconfirm
                         placement="bottomRight"
-                        title="Please confirm again that you would like to cancel the quiz"
+                        title="Please confirm again that you would like to close this page"
                         onConfirm={onCloseHandler}
                         okText="Yes"
                         cancelText="No"
@@ -43,15 +43,17 @@ export default function GenericDrawer({
                         </Button>
                     </Popconfirm>
 
-                    <Popconfirm
-                        placement="bottomRight"
-                        title="Please confirm again that you would like to save and submit the quiz"
-                        onConfirm={onFinishHandler}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button type="primary">Save And Submit</Button>
-                    </Popconfirm>
+                    {onFinishHandler !== undefined ?? (
+                        <Popconfirm
+                            placement="bottomRight"
+                            title="Please confirm again that you would like to save and submit the quiz"
+                            onConfirm={onFinishHandler}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="primary">Save And Submit</Button>
+                        </Popconfirm>
+                    )}
                 </Space>
             }
         >

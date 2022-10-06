@@ -1,12 +1,17 @@
 import {Alert, Space} from "antd";
 import Question from "../../../utilities/types/quizzes/question.type";
+import Solution from "../../../utilities/types/quizzes/solution.type";
 
 interface Props {
     question: Question;
+    selectedSolutions?: Solution[];
 }
 
-export default function QuizQuestionResult({question}: Props) {
-    const solutions = question.selected_solution?.map((item) => item.id);
+export default function QuizQuestionResult({
+                                               question,
+                                               selectedSolutions = [],
+                                           }: Props) {
+    const solutions = selectedSolutions?.map((item) => item.id);
 
     return (
         <Space direction="vertical" className="w-full">

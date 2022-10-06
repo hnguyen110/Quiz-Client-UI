@@ -1,5 +1,6 @@
 import {List} from "antd";
 import Question from "../../../utilities/types/quizzes/question.type";
+import QuizResultAnswer from "../../../utilities/types/quizzes/quiz-result-answer.type";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
 import QuizQuestion from "../quiz-question/quiz-question";
 
@@ -8,9 +9,10 @@ interface Props {
     width: string | number;
     open: boolean;
     resultOnly?: boolean;
-    questions: Question[];
+    answers?: QuizResultAnswer[];
+    questions?: Question[];
     onCloseHandler: any;
-    onFinishHandler: any;
+    onFinishHandler?: any;
 }
 
 export default function QuizDetails({
@@ -18,6 +20,7 @@ export default function QuizDetails({
                                         width,
                                         open,
                                         resultOnly = false,
+                                        answers,
                                         questions,
                                         onCloseHandler,
                                         onFinishHandler,
@@ -33,10 +36,18 @@ export default function QuizDetails({
         >
             <List
                 itemLayout="horizontal"
-                dataSource={questions}
+                dataSource={
+                    resultOnly ? answers?.map((item) => item.question) : questions
+                }
                 renderItem={(item) => (
                     <List.Item>
-                        <QuizQuestion resultOnly={resultOnly} question={item}/>
+                        <QuizQuestion
+                            question={item}
+                            resultOnly={resultOnly}
+                            selectedSolutions={answers
+                                ?.filter((answer) => item.id === answer.question.id)
+                                .map((answer) => answer.selected_solution)}
+                        />
                     </List.Item>
                 )}
             />

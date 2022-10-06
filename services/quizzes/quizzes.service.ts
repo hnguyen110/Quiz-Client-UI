@@ -1,6 +1,7 @@
 import axios from "axios";
 import Answer from "../../utilities/types/quizzes/answer.type";
 import AssignedQuiz from "../../utilities/types/quizzes/assigned-quiz.type";
+import QuizResult from "../../utilities/types/quizzes/quiz-result.type";
 import Quiz from "../../utilities/types/quizzes/quiz.type";
 import SubmittedQuiz from "../../utilities/types/quizzes/submitted-quiz.type";
 import Session from "../../utilities/types/utilities/session.type";
@@ -57,6 +58,22 @@ export async function getSubmittedQuizzes(
 ): Promise<SubmittedQuiz[]> {
     const {data} = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/submitted-quizzes/`,
+        {
+            headers: {
+                Authorization: `Bearer ${session.access}`,
+            },
+        }
+    );
+    return data;
+}
+
+export async function getSubmittedQuizDetails(
+    session: Session,
+    quizId: number,
+    participantId: number
+): Promise<QuizResult> {
+    const {data} = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quizId}/participants/${participantId}/results/`,
         {
             headers: {
                 Authorization: `Bearer ${session.access}`,
