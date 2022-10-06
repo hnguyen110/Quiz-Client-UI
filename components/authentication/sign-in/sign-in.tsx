@@ -1,5 +1,5 @@
 import {Button, Col, Form, Input, message, Row, Typography} from "antd";
-import {signIn, signOut} from "next-auth/react";
+import {signIn} from "next-auth/react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import SignInParameters from "../../../utilities/types/authentication/sign-in.type";
@@ -49,18 +49,6 @@ export default function SignIn() {
                     <Form.Item>
                         <Button block type="primary" htmlType="submit">
                             Sign In
-                        </Button>
-                    </Form.Item>
-
-                    <Form.Item>
-                        <Button
-                            onClick={() => signOut()}
-                            block
-                            danger
-                            type="primary"
-                            htmlType="submit"
-                        >
-                            Sign Out
                         </Button>
                     </Form.Item>
 
