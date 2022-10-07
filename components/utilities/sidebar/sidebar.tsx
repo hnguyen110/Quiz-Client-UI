@@ -5,48 +5,52 @@ import Link from "next/link";
 
 export default function Sidebar() {
     const items: ItemType[] = [
-        {
-            key: 1,
-            icon: <UserOutlined/>,
-            label: "Account",
-            children: [
-                {
-                    key: 2,
-                    label: (
-                        <Link href="/account/profile-information">
-                            View Profile Information
-                        </Link>
-                    ),
-                },
-                {
-                    key: 3,
-                    label: <Link href="/account/change-password">Change Password</Link>,
-                },
-            ],
-        },
-        {
-            key: 4,
-            icon: <FileProtectOutlined/>,
-            label: "Quizzes",
-            children: [
-                {
-                    key: 5,
-                    label: (
-                        <Link href="/quizzes/view-assigned-quizzes">
-                            View Assigned Quizzes
-                        </Link>
-                    ),
-                },
-                {
-                    key: 6,
-                    label: (
-                        <Link href="/quizzes/view-submitted-quizzes">
-                            View Submitted Quizzes
-                        </Link>
-                    ),
-                },
-            ],
-        },
+      {
+        key: 1,
+        icon: <UserOutlined />,
+        label: "Account",
+        children: [
+          {
+            key: 2,
+            label: (
+              <Link href="/account/profile-information">
+                View Profile Information
+              </Link>
+            ),
+          },
+          {
+            key: 3,
+            label: <Link href="/account/change-password">Change Password</Link>,
+          },
+        ],
+      },
+      {
+        key: 4,
+        icon: <FileProtectOutlined />,
+        label: "Quizzes",
+        children: [
+          {
+            key: 5,
+            label: (
+              <Link href="/quizzes/view-assigned-quizzes">
+                View Assigned Quizzes
+              </Link>
+            ),
+          },
+          {
+            key: 6,
+            label: (
+              <Link href="/quizzes/view-submitted-quizzes">
+                View Submitted Quizzes
+              </Link>
+            ),
+          },
+          {
+            key: 6,
+            label: <Link href="/quizzes/manage-quizzes">Manage Quizzes</Link>,
+          },
+        ],
+      },
     ];
 
     return (
