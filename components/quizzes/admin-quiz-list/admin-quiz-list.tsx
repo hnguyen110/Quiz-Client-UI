@@ -1,11 +1,13 @@
-import { Button, Card, Col, List, Row } from "antd";
+import { Button, Card, Col, Dropdown, List, Menu, Row, Space } from "antd";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
+import { DownOutlined } from "@ant-design/icons";
 
 interface Props {
   title: string;
   extra?: any;
   quizzes: Quiz[];
   onQuizSelectedHandler: any;
+  onQuizSelectedForUpdatingHandler: any;
 }
 
 export default function AdminQuizList({
@@ -13,6 +15,7 @@ export default function AdminQuizList({
   extra,
   quizzes,
   onQuizSelectedHandler,
+  onQuizSelectedForUpdatingHandler,
 }: Props) {
   return (
     <Card
@@ -28,13 +31,39 @@ export default function AdminQuizList({
             dataSource={quizzes}
             renderItem={(item) => (
               <List.Item
-                onClick={() => {
-                  onQuizSelectedHandler(item);
-                }}
                 actions={[
-                  <Button type="primary" key="startQuiz">
-                    View Quiz Details
-                  </Button>,
+                  <Dropdown
+                    key={"actions"}
+                    overlay={
+                      <Menu
+                        items={[
+                          {
+                            label: "Update Quiz",
+                            key: "1",
+                            onClick: () =>
+                              onQuizSelectedForUpdatingHandler(item),
+                          },
+                          {
+                            label: "Delete Quiz",
+                            key: "2",
+                          },
+                          {
+                            label: "View Quiz Questions",
+                            key: "3",
+                            onClick: () => onQuizSelectedHandler(item),
+                          },
+                        ]}
+                      />
+                    }
+                    trigger={["click"]}
+                  >
+                    <Button type="default">
+                      <Space>
+                        Manage Quiz
+                        <DownOutlined />
+                      </Space>
+                    </Button>
+                  </Dropdown>,
                 ]}
               >
                 <List.Item.Meta

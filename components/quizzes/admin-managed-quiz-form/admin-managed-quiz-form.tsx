@@ -1,7 +1,6 @@
 import GenericModal from "../../utilities/generic-modal/generic-modal";
 import { Form, FormInstance, Input } from "antd";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
-import { useEffect } from "react";
 
 interface Props {
   quiz?: Quiz;
@@ -13,22 +12,12 @@ interface Props {
 }
 
 export default function AdminManagedQuizForm({
-  quiz,
   form,
   title,
   open,
   onOkHandler,
   onCancelHandler,
 }: Props) {
-  useEffect(() => {
-    if (quiz) {
-      form.setFieldsValue({
-        title: quiz.title,
-        description: quiz.description,
-      });
-    }
-  }, [form, quiz]);
-
   return (
     <GenericModal
       title={title}
@@ -37,6 +26,9 @@ export default function AdminManagedQuizForm({
       onCancelHandler={onCancelHandler}
     >
       <Form form={form} layout="vertical">
+        <Form.Item hidden name="id">
+          <Input />
+        </Form.Item>
         <Form.Item
           hasFeedback
           label="Title"
