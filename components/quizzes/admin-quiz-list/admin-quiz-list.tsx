@@ -3,12 +3,14 @@ import Quiz from "../../../utilities/types/quizzes/quiz.type";
 
 interface Props {
   title: string;
+  extra?: any;
   quizzes: Quiz[];
   onQuizSelectedHandler: any;
 }
 
 export default function AdminQuizList({
   title,
+  extra,
   quizzes,
   onQuizSelectedHandler,
 }: Props) {
@@ -17,6 +19,7 @@ export default function AdminQuizList({
       title={title}
       bordered={false}
       className="w-full h-screen overflow-y-auto"
+      extra={extra}
     >
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24}>

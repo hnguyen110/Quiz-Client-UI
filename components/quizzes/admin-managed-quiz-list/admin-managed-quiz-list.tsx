@@ -1,12 +1,15 @@
-import { message } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { getAdministratorManagedQuizzes } from "../../../services/quizzes/quizzes.service";
-import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import AdminQuizList from "../admin-quiz-list/admin-quiz-list";
+import AdminManagedQuizForm from "../admin-managed-quiz-form/admin-managed-quiz-form";
+import { getAdministratorManagedQuizzes } from "../../../services/quizzes/quizzes.service";
+import { Button, message } from "antd";
+import { AdminManagedQuizzesContext } from "../../../contexts/admin-managed-quizzes.context";
+import Quiz from "../../../utilities/types/quizzes/quiz.type";
 
 export default function AdminManagedQuizList() {
   const [quizzes, setQuizzes] = useState([] as Quiz[]);
+  const [quizFormOpen, setQuizFormOpen] = useState(false);
   const session = useSession();
 
   useEffect(() => {
@@ -22,10 +25,28 @@ export default function AdminManagedQuizList() {
   }, [session.data]);
 
   return (
-    <AdminQuizList
-      title={"Manage Quizzes"}
-      quizzes={quizzes}
-      onQuizSelectedHandler={undefined}
-    />
+    <AdminManagedQuizzesContext.Provider
+      value={{
+        quizzes,
+        setQuizzes,
+      }}
+    >
+      <AdminManagedQuizForm
+        title="Create Quiz"
+        open={quizFormOpen}
+        onOkHandler={() => {}}
+        onCancelHandler={() => {
+          setQuizFormOpen(false);
+        }}
+      />
+      <AdminQuizList
+        title={"Manage Quizzes"}
+        extra={
+          <Button onClick={() => setQuizFormOpen(true)}>Create Quiz</Button>
+        }
+        quizzes={quizzes}
+        onQuizSelectedHandler={undefined}
+      />
+    </AdminManagedQuizzesContext.Provider>
   );
 }
