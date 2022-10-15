@@ -4,9 +4,11 @@ import AssignedQuiz from "../utilities/types/quizzes/assigned-quiz.type";
 
 export const QuizzesContext = createContext({
     answers: [],
-    setAnswers: (answers: Answer[]) => {},
+    setAnswers: (answers: Answer[]) => {
+    },
     quizzes: [],
-    setQuizzes: (quizzes: AssignedQuiz[]) => {},
+    setQuizzes: (quizzes: AssignedQuiz[]) => {
+    },
 } as {
     answers: Answer[];
     setAnswers: Dispatch<SetStateAction<Answer[]>>;
