@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { getAdministratorManagedQuizzes } from "../../../services/quizzes/quizzes.service";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import AdminQuizList from "../admin-quiz-list/admin-quiz-list";
-import QuizList from "../quiz-list/quiz-list";
 
 export default function AdminManagedQuizList() {
   const [quizzes, setQuizzes] = useState([] as Quiz[]);

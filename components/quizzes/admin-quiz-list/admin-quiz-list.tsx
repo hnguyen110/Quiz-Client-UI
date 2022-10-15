@@ -1,8 +1,5 @@
 import { Button, Card, Col, List, Row } from "antd";
-import Item from "antd/lib/list/Item";
-import AssignedQuiz from "../../../utilities/types/quizzes/assigned-quiz.type";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
-import SubmittedQuiz from "../../../utilities/types/quizzes/submitted-quiz.type";
 
 interface Props {
   title: string;
