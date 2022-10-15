@@ -1,10 +1,10 @@
-import AdministratorManagedQuizList from "../../../components/quizzes/administrator-managed-quiz-list/administrator-managed-quiz-list";
+import AdminManagedQuizList from "../../../components/quizzes/admin-managed-quiz-list/admin-managed-quiz-list";
 import AuthenticationGuard from "../../../components/utilities/authentication-guard/authentication-guard";
 
 export default function Index() {
   return (
     <AuthenticationGuard>
-      <AdministratorManagedQuizList />
+      <AdminManagedQuizList />
     </AuthenticationGuard>
   );
 }
