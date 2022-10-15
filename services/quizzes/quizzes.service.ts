@@ -96,3 +96,16 @@ export async function getAdministratorManagedQuizzes(
   );
   return data;
 }
+
+export async function createQuiz(session: Session, quiz: Quiz): Promise<Quiz> {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/`,
+    quiz,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}

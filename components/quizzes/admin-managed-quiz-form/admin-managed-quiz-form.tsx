@@ -1,10 +1,11 @@
 import GenericModal from "../../utilities/generic-modal/generic-modal";
-import { Form, Input } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import { useEffect } from "react";
 
 interface Props {
   quiz?: Quiz;
+  form: FormInstance<any>;
   title: string;
   open: boolean;
   onOkHandler: any;
@@ -13,13 +14,12 @@ interface Props {
 
 export default function AdminManagedQuizForm({
   quiz,
+  form,
   title,
   open,
   onOkHandler,
   onCancelHandler,
 }: Props) {
-  const [form] = Form.useForm();
-
   useEffect(() => {
     if (quiz) {
       form.setFieldsValue({
@@ -52,7 +52,10 @@ export default function AdminManagedQuizForm({
           name="description"
           rules={[{ required: true, message: "This field can not be empty" }]}
         >
-          <Input placeholder="Please enter the quiz description" />
+          <Input.TextArea
+            rows={5}
+            placeholder="Please enter the quiz description"
+          />
         </Form.Item>
       </Form>
     </GenericModal>
