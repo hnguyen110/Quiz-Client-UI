@@ -109,3 +109,31 @@ export async function createQuiz(session: Session, quiz: Quiz): Promise<Quiz> {
   );
   return data;
 }
+
+export async function updateQuiz(session: Session, quiz: Quiz): Promise<Quiz> {
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quiz.id}/`,
+    quiz,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
+export async function deleteQuiz(
+  session: Session,
+  id: string | number
+): Promise<Quiz> {
+  const { data } = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${id}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}

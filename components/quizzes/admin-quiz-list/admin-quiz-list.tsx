@@ -1,11 +1,14 @@
-import { Button, Card, Col, List, Row } from "antd";
+import { Card, Col, List, Row } from "antd";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
+import ItemActionsDropdownButton from "./item-actions-dropdown-button";
 
 interface Props {
   title: string;
   extra?: any;
   quizzes: Quiz[];
   onQuizSelectedHandler: any;
+  onQuizSelectedForUpdatingHandler: any;
+  onQuizSelectedForDeletingHandler: any;
 }
 
 export default function AdminQuizList({
@@ -13,6 +16,8 @@ export default function AdminQuizList({
   extra,
   quizzes,
   onQuizSelectedHandler,
+  onQuizSelectedForUpdatingHandler,
+  onQuizSelectedForDeletingHandler,
 }: Props) {
   return (
     <Card
@@ -28,13 +33,18 @@ export default function AdminQuizList({
             dataSource={quizzes}
             renderItem={(item) => (
               <List.Item
-                onClick={() => {
-                  onQuizSelectedHandler(item);
-                }}
                 actions={[
-                  <Button type="primary" key="startQuiz">
-                    View Quiz Details
-                  </Button>,
+                  <ItemActionsDropdownButton
+                    key={item.id}
+                    quiz={item}
+                    onQuizSelectedHandler={onQuizSelectedHandler}
+                    onQuizSelectedForUpdatingHandler={
+                      onQuizSelectedForUpdatingHandler
+                    }
+                    onQuizSelectedForDeletingHandler={
+                      onQuizSelectedForDeletingHandler
+                    }
+                  />,
                 ]}
               >
                 <List.Item.Meta
