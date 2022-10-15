@@ -1,6 +1,6 @@
-import { Button, Card, Col, Dropdown, List, Menu, Row, Space } from "antd";
+import { Card, Col, List, Row } from "antd";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
-import { DownOutlined } from "@ant-design/icons";
+import ItemActionsDropdownButton from "./item-actions-dropdown-button";
 
 interface Props {
   title: string;
@@ -8,6 +8,7 @@ interface Props {
   quizzes: Quiz[];
   onQuizSelectedHandler: any;
   onQuizSelectedForUpdatingHandler: any;
+  onQuizSelectedForDeletingHandler: any;
 }
 
 export default function AdminQuizList({
@@ -16,6 +17,7 @@ export default function AdminQuizList({
   quizzes,
   onQuizSelectedHandler,
   onQuizSelectedForUpdatingHandler,
+  onQuizSelectedForDeletingHandler,
 }: Props) {
   return (
     <Card
@@ -32,38 +34,17 @@ export default function AdminQuizList({
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  <Dropdown
-                    key={"actions"}
-                    overlay={
-                      <Menu
-                        items={[
-                          {
-                            label: "Update Quiz",
-                            key: "1",
-                            onClick: () =>
-                              onQuizSelectedForUpdatingHandler(item),
-                          },
-                          {
-                            label: "Delete Quiz",
-                            key: "2",
-                          },
-                          {
-                            label: "View Quiz Questions",
-                            key: "3",
-                            onClick: () => onQuizSelectedHandler(item),
-                          },
-                        ]}
-                      />
+                  <ItemActionsDropdownButton
+                    key={item.id}
+                    quiz={item}
+                    onQuizSelectedHandler={onQuizSelectedHandler}
+                    onQuizSelectedForUpdatingHandler={
+                      onQuizSelectedForUpdatingHandler
                     }
-                    trigger={["click"]}
-                  >
-                    <Button type="default">
-                      <Space>
-                        Manage Quiz
-                        <DownOutlined />
-                      </Space>
-                    </Button>
-                  </Dropdown>,
+                    onQuizSelectedForDeletingHandler={
+                      onQuizSelectedForDeletingHandler
+                    }
+                  />,
                 ]}
               >
                 <List.Item.Meta

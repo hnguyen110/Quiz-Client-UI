@@ -4,6 +4,7 @@ import AdminQuizList from "../admin-quiz-list/admin-quiz-list";
 import AdminManagedQuizForm from "../admin-managed-quiz-form/admin-managed-quiz-form";
 import {
   createQuiz,
+  deleteQuiz,
   getAdministratorManagedQuizzes,
   updateQuiz,
 } from "../../../services/quizzes/quizzes.service";
@@ -13,7 +14,8 @@ import Quiz from "../../../utilities/types/quizzes/quiz.type";
 
 export default function AdminManagedQuizList() {
   const [quizzes, setQuizzes] = useState([] as Quiz[]);
-  const [quizFormOpen, setQuizFormOpen] = useState(false);
+  const [createQuizFormOpen, setCreateCreateQuizFormOpen] = useState(false);
+  const [updateQuizFormOpen, setUpdateCreateQuizFormOpen] = useState(false);
   const [createQuizForm] = Form.useForm();
   const [updateQuizForm] = Form.useForm();
   const session = useSession();
@@ -36,7 +38,7 @@ export default function AdminManagedQuizList() {
       const quiz = await createQuiz(session.data as any, data);
       setQuizzes([quiz, ...quizzes]);
       createQuizForm.resetFields();
-      setQuizFormOpen(false);
+      setCreateCreateQuizFormOpen(false);
       message.success("The quiz is created successfully");
     } catch (e) {
       message.error(
@@ -47,14 +49,14 @@ export default function AdminManagedQuizList() {
 
   async function onCancelCreateQuizHandler() {
     createQuizForm.resetFields();
-    setQuizFormOpen(false);
+    setCreateCreateQuizFormOpen(false);
   }
 
   async function onQuizSelectedForUpdatingHandler(quiz: Quiz) {
     updateQuizForm.setFieldsValue({
       ...quiz,
     });
-    setQuizFormOpen(true);
+    setUpdateCreateQuizFormOpen(true);
   }
 
   async function onUpdateQuizHandler() {
@@ -72,7 +74,7 @@ export default function AdminManagedQuizList() {
         })
       );
       updateQuizForm.resetFields();
-      setQuizFormOpen(false);
+      setUpdateCreateQuizFormOpen(false);
       message.success("The quiz is updated successfully");
     } catch (e) {
       message.error(
@@ -83,7 +85,19 @@ export default function AdminManagedQuizList() {
 
   async function onCancelUpdateQuizHandler() {
     updateQuizForm.resetFields();
-    setQuizFormOpen(false);
+    setUpdateCreateQuizFormOpen(false);
+  }
+
+  async function onQuizSelectedForDeletingHandler(quiz: Quiz) {
+    try {
+      await deleteQuiz(session.data as any, quiz.id);
+      setQuizzes(quizzes.filter((item) => item.id !== quiz.id));
+      message.success("The quiz is deleted successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to delete the quiz, please try again"
+      );
+    }
   }
 
   return (
@@ -96,25 +110,28 @@ export default function AdminManagedQuizList() {
       <AdminManagedQuizForm
         form={createQuizForm}
         title="Create Quiz"
-        open={quizFormOpen}
+        open={createQuizFormOpen}
         onOkHandler={onCreateQuizHandler}
         onCancelHandler={onCancelCreateQuizHandler}
       />
       <AdminManagedQuizForm
         form={updateQuizForm}
         title="Update Quiz"
-        open={quizFormOpen}
+        open={updateQuizFormOpen}
         onOkHandler={onUpdateQuizHandler}
         onCancelHandler={onCancelUpdateQuizHandler}
       />
       <AdminQuizList
         title={"Manage Quizzes"}
         extra={
-          <Button onClick={() => setQuizFormOpen(true)}>Create Quiz</Button>
+          <Button onClick={() => setCreateCreateQuizFormOpen(true)}>
+            Create Quiz
+          </Button>
         }
         quizzes={quizzes}
         onQuizSelectedHandler={undefined}
         onQuizSelectedForUpdatingHandler={onQuizSelectedForUpdatingHandler}
+        onQuizSelectedForDeletingHandler={onQuizSelectedForDeletingHandler}
       />
     </AdminManagedQuizzesContext.Provider>
   );
