@@ -1,10 +1,10 @@
-import SubmittedQuizzList from "../../../components/quizzes/submitted-quizz-list/submitted-quizz-list";
+import SubmittedQuizList from "../../../components/quizzes/submitted-quiz-list/submitted-quiz-list";
 import AuthenticationGuard from "../../../components/utilities/authentication-guard/authentication-guard";
 
 export default function Index() {
-    return (
-        <AuthenticationGuard>
-            <SubmittedQuizzList/>
-        </AuthenticationGuard>
-    );
+  return (
+    <AuthenticationGuard>
+      <SubmittedQuizList />
+    </AuthenticationGuard>
+  );
 }
