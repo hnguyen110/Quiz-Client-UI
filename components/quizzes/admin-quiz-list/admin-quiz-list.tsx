@@ -1,46 +1,40 @@
 import { Button, Card, Col, List, Row } from "antd";
-import AssignedQuiz from "../../../utilities/types/quizzes/assigned-quiz.type";
-import SubmittedQuiz from "../../../utilities/types/quizzes/submitted-quiz.type";
+import Quiz from "../../../utilities/types/quizzes/quiz.type";
 
 interface Props {
   title: string;
-  quizzes: AssignedQuiz[] | SubmittedQuiz[];
+  extra?: any;
+  quizzes: Quiz[];
   onQuizSelectedHandler: any;
-  resultOnly?: boolean;
 }
 
-export default function QuizList({
+export default function AdminQuizList({
   title,
+  extra,
   quizzes,
   onQuizSelectedHandler,
-  resultOnly = false,
 }: Props) {
   return (
     <Card
       title={title}
       bordered={false}
       className="w-full h-screen overflow-y-auto"
+      extra={extra}
     >
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24}>
           <List
             itemLayout="horizontal"
-            dataSource={quizzes.map((item) => item.quiz)}
+            dataSource={quizzes}
             renderItem={(item) => (
               <List.Item
                 onClick={() => {
                   onQuizSelectedHandler(item);
                 }}
                 actions={[
-                  resultOnly ? (
-                    <Button type="primary" key="viewResult">
-                      View Quiz Result
-                    </Button>
-                  ) : (
-                    <Button type="primary" key="startQuiz">
-                      Start Quiz
-                    </Button>
-                  ),
+                  <Button type="primary" key="startQuiz">
+                    View Quiz Details
+                  </Button>,
                 ]}
               >
                 <List.Item.Meta
