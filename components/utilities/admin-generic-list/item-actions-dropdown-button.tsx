@@ -1,20 +1,19 @@
 import { Button, Dropdown, Menu, Popconfirm, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import Quiz from "../../../utilities/types/quizzes/quiz.type";
 
 interface Props {
-  quiz: Quiz;
-  onQuizSelectedHandler: any;
-  onQuizSelectedForUpdatingHandler: any;
-  onQuizSelectedForDeletingHandler: any;
+  item: any;
+  onItemSelectedHandler: any;
+  onItemSelectedForUpdatingHandler: any;
+  onItemSelectedForDeletingHandler: any;
 }
 
 export default function ItemActionsDropdownButton({
-  quiz,
-  onQuizSelectedHandler,
-  onQuizSelectedForUpdatingHandler,
-  onQuizSelectedForDeletingHandler,
+  item,
+  onItemSelectedHandler,
+  onItemSelectedForUpdatingHandler,
+  onItemSelectedForDeletingHandler,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -34,30 +33,30 @@ export default function ItemActionsDropdownButton({
           }}
           items={[
             {
-              label: "Update Quiz",
+              label: "Update Item",
               key: "1",
-              onClick: () => onQuizSelectedForUpdatingHandler(quiz),
+              onClick: () => onItemSelectedForUpdatingHandler(item),
             },
             {
               label: (
                 <Popconfirm
                   placement="right"
-                  title="Please confirm again that you would like to delete the selected quiz"
+                  title="Please confirm again that you would like to delete the selected item"
                   onConfirm={() => {
-                    onQuizSelectedForDeletingHandler(quiz);
+                    onItemSelectedForDeletingHandler(item);
                   }}
                   okText="Yes"
                   cancelText="No"
                 >
-                  Delete Quiz
+                  Delete Item
                 </Popconfirm>
               ),
               key: "2",
             },
             {
-              label: "View Quiz Questions",
+              label: "View Item Details",
               key: "3",
-              onClick: () => onQuizSelectedHandler(quiz),
+              onClick: () => onItemSelectedHandler(item),
             },
           ]}
         />
@@ -66,7 +65,7 @@ export default function ItemActionsDropdownButton({
     >
       <Button type="default">
         <Space>
-          Manage Quiz
+          Manage Item
           <DownOutlined />
         </Space>
       </Button>
