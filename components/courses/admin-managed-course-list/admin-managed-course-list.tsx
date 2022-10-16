@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   createCourse,
+  deleteCourse,
   getAdministratorManagedCourses,
   updateCourse,
 } from "../../../services/courses/courses.service";
@@ -88,6 +89,18 @@ export default function AdminManagedCourseList() {
     setUpdateCourseFormOpen(false);
   }
 
+  async function onCourseSelectedForDeletingHandler(course: Course) {
+    try {
+      await deleteCourse(session.data as any, course.id);
+      setCourses(courses.filter((item) => item.id !== course.id));
+      message.success("The course is deleted successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to delete the course, please try again"
+      );
+    }
+  }
+
   return (
     <AdminManagedCoursesContext.Provider value={{ courses, setCourses }}>
       <AdminManagedCourseForm
@@ -114,7 +127,7 @@ export default function AdminManagedCourseList() {
         dataSource={courses}
         onItemSelectedHandler={undefined}
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
-        onItemSelectedForDeletingHandler={undefined}
+        onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
       />
     </AdminManagedCoursesContext.Provider>
   );

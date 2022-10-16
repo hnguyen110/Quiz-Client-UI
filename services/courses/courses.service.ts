@@ -47,3 +47,18 @@ export async function updateCourse(
   );
   return data;
 }
+
+export async function deleteCourse(
+  session: Session,
+  id: string | number
+): Promise<Course> {
+  const { data } = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${id}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
