@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getAdministratorManagedCourses } from "../../../services/courses/courses.service";
+import {
+  createCourse,
+  getAdministratorManagedCourses,
+} from "../../../services/courses/courses.service";
 import { useSession } from "next-auth/react";
 import { Button, Form, message } from "antd";
 import Course from "../../../utilities/types/courses/course.type";
@@ -28,8 +31,8 @@ export default function AdminManagedCourseList() {
   async function onCreateCourseHandler() {
     const data = await createCourseForm.validateFields();
     try {
-      // const quiz = await createQuiz(session.data as any, data);
-      // setCourses([quiz, ...courses]);
+      const course = await createCourse(session.data as any, data);
+      setCourses([course, ...courses]);
       createCourseForm.resetFields();
       setCreateCourseFormOpen(false);
       message.success("The course is created successfully");
