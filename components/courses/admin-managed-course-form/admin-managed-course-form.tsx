@@ -9,7 +9,7 @@ interface Props {
   onCancelHandler: any;
 }
 
-export default function AdminManagedQuizForm({
+export default function AdminManagedCourseForm({
   form,
   title,
   open,
@@ -33,7 +33,7 @@ export default function AdminManagedQuizForm({
           name="title"
           rules={[{ required: true, message: "This field can not be empty" }]}
         >
-          <Input placeholder="Please enter the quiz title" />
+          <Input placeholder="Please enter the course title" />
         </Form.Item>
 
         <Form.Item
@@ -44,7 +44,7 @@ export default function AdminManagedQuizForm({
         >
           <Input.TextArea
             rows={5}
-            placeholder="Please enter the quiz description"
+            placeholder="Please enter the course description"
           />
         </Form.Item>
       </Form>

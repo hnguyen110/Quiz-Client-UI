@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import AdminQuizList from "../admin-quiz-list/admin-quiz-list";
 import AdminManagedQuizForm from "../admin-managed-quiz-form/admin-managed-quiz-form";
 import {
   createQuiz,
@@ -11,6 +10,7 @@ import {
 import { Button, Form, message } from "antd";
 import { AdminManagedQuizzesContext } from "../../../contexts/admin-managed-quizzes.context";
 import Quiz from "../../../utilities/types/quizzes/quiz.type";
+import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 
 export default function AdminManagedQuizList() {
   const [quizzes, setQuizzes] = useState([] as Quiz[]);
@@ -121,17 +121,17 @@ export default function AdminManagedQuizList() {
         onOkHandler={onUpdateQuizHandler}
         onCancelHandler={onCancelUpdateQuizHandler}
       />
-      <AdminQuizList
+      <AdminGenericList
         title={"Manage Quizzes"}
         extra={
           <Button onClick={() => setCreateCreateQuizFormOpen(true)}>
             Create Quiz
           </Button>
         }
-        quizzes={quizzes}
-        onQuizSelectedHandler={undefined}
-        onQuizSelectedForUpdatingHandler={onQuizSelectedForUpdatingHandler}
-        onQuizSelectedForDeletingHandler={onQuizSelectedForDeletingHandler}
+        dataSource={quizzes}
+        onItemSelectedHandler={undefined}
+        onItemSelectedForUpdatingHandler={onQuizSelectedForUpdatingHandler}
+        onItemSelectedForDeletingHandler={onQuizSelectedForDeletingHandler}
       />
     </AdminManagedQuizzesContext.Provider>
   );

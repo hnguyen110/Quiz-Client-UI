@@ -1,23 +1,22 @@
 import { Card, Col, List, Row } from "antd";
-import Quiz from "../../../utilities/types/quizzes/quiz.type";
 import ItemActionsDropdownButton from "./item-actions-dropdown-button";
 
 interface Props {
   title: string;
   extra?: any;
-  quizzes: Quiz[];
-  onQuizSelectedHandler: any;
-  onQuizSelectedForUpdatingHandler: any;
-  onQuizSelectedForDeletingHandler: any;
+  dataSource: any[];
+  onItemSelectedHandler: any;
+  onItemSelectedForUpdatingHandler: any;
+  onItemSelectedForDeletingHandler: any;
 }
 
-export default function AdminQuizList({
+export default function AdminGenericList({
   title,
   extra,
-  quizzes,
-  onQuizSelectedHandler,
-  onQuizSelectedForUpdatingHandler,
-  onQuizSelectedForDeletingHandler,
+  dataSource,
+  onItemSelectedHandler,
+  onItemSelectedForUpdatingHandler,
+  onItemSelectedForDeletingHandler,
 }: Props) {
   return (
     <Card
@@ -30,19 +29,19 @@ export default function AdminQuizList({
         <Col xs={24} sm={24} md={24}>
           <List
             itemLayout="horizontal"
-            dataSource={quizzes}
+            dataSource={dataSource}
             renderItem={(item) => (
               <List.Item
                 actions={[
                   <ItemActionsDropdownButton
                     key={item.id}
-                    quiz={item}
-                    onQuizSelectedHandler={onQuizSelectedHandler}
-                    onQuizSelectedForUpdatingHandler={
-                      onQuizSelectedForUpdatingHandler
+                    item={item}
+                    onItemSelectedHandler={onItemSelectedHandler}
+                    onItemSelectedForUpdatingHandler={
+                      onItemSelectedForUpdatingHandler
                     }
-                    onQuizSelectedForDeletingHandler={
-                      onQuizSelectedForDeletingHandler
+                    onItemSelectedForDeletingHandler={
+                      onItemSelectedForDeletingHandler
                     }
                   />,
                 ]}
