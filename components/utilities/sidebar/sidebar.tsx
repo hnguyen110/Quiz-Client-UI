@@ -1,4 +1,8 @@
-import { FileProtectOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  FileProtectOutlined,
+  ReadOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import { ItemType } from "antd/lib/menu/hooks/useItems";
 import { useSession } from "next-auth/react";
@@ -54,6 +58,17 @@ export default function Sidebar() {
         },
       ],
     },
+    {
+      key: 8,
+      icon: <ReadOutlined />,
+      label: "Courses",
+      children: [
+        {
+          key: 9,
+          label: <Link href="/courses/manage-courses">Manage Courses</Link>,
+        },
+      ],
+    },
   ];
 
   return (
@@ -61,7 +76,7 @@ export default function Sidebar() {
       className="w-full h-screen"
       mode="inline"
       theme="light"
-      defaultOpenKeys={["1", "4"]}
+      defaultOpenKeys={["1", "4", "8"]}
       defaultSelectedKeys={["2"]}
       items={items}
     />
