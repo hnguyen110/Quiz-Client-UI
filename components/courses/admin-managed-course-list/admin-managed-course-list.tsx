@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   createCourse,
   getAdministratorManagedCourses,
+  updateCourse,
 } from "../../../services/courses/courses.service";
 import { useSession } from "next-auth/react";
 import { Button, Form, message } from "antd";
@@ -9,11 +10,14 @@ import Course from "../../../utilities/types/courses/course.type";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
+import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
 
 export default function AdminManagedCourseList() {
   const [courses, setCourses] = useState([] as Course[]);
   const [createCourseFormOpen, setCreateCourseFormOpen] = useState(false);
+  const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
+  const [updateCourseForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -48,6 +52,42 @@ export default function AdminManagedCourseList() {
     setCreateCourseFormOpen(false);
   }
 
+  async function onCourseSelectedForUpdatingHandler(course: Course) {
+    updateCourseForm.setFieldsValue({
+      ...course,
+    });
+    setUpdateCourseFormOpen(true);
+  }
+
+  async function onUpdateQuizHandler() {
+    const data = await updateCourseForm.validateFields();
+    try {
+      const course = await updateCourse(session.data as any, data);
+      setCourses(
+        courses.map((item) => {
+          if (item.id === course.id) {
+            return {
+              ...course,
+            };
+          }
+          return item;
+        })
+      );
+      updateCourseForm.resetFields();
+      setUpdateCourseFormOpen(false);
+      message.success("The course is updated successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to update the course, please try again"
+      );
+    }
+  }
+
+  async function onCancelUpdateCourseHandler() {
+    updateCourseForm.resetFields();
+    setUpdateCourseFormOpen(false);
+  }
+
   return (
     <AdminManagedCoursesContext.Provider value={{ courses, setCourses }}>
       <AdminManagedCourseForm
@@ -56,6 +96,13 @@ export default function AdminManagedCourseList() {
         open={createCourseFormOpen}
         onOkHandler={onCreateCourseHandler}
         onCancelHandler={onCancelCreateQuizHandler}
+      />
+      <AdminManagedQuizForm
+        form={updateCourseForm}
+        title="Update Course"
+        open={updateCourseFormOpen}
+        onOkHandler={onUpdateQuizHandler}
+        onCancelHandler={onCancelUpdateCourseHandler}
       />
       <AdminGenericList
         title={"Manage Courses"}
@@ -66,7 +113,7 @@ export default function AdminManagedCourseList() {
         }
         dataSource={courses}
         onItemSelectedHandler={undefined}
-        onItemSelectedForUpdatingHandler={undefined}
+        onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={undefined}
       />
     </AdminManagedCoursesContext.Provider>

@@ -1,7 +1,6 @@
 import Session from "../../utilities/types/utilities/session.type";
 import Course from "../../utilities/types/courses/course.type";
 import axios from "axios";
-import Quiz from "../../utilities/types/quizzes/quiz.type";
 
 export async function getAdministratorManagedCourses(
   session: Session
@@ -23,6 +22,22 @@ export async function createCourse(
 ): Promise<Course> {
   const { data } = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/api/courses/`,
+    course,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
+export async function updateCourse(
+  session: Session,
+  course: Course
+): Promise<Course> {
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${course.id}/`,
     course,
     {
       headers: {
