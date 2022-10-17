@@ -12,11 +12,14 @@ import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-l
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
 import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
+import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
 
 export default function AdminManagedCourseList() {
+  const [course, setCourse] = useState(null as null | Course);
   const [courses, setCourses] = useState([] as Course[]);
   const [createCourseFormOpen, setCreateCourseFormOpen] = useState(false);
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
   const session = useSession();
@@ -32,6 +35,11 @@ export default function AdminManagedCourseList() {
         );
       });
   }, [session.data]);
+
+  async function onItemSelectedHandler(data: Course) {
+    setCourse(data);
+    setDrawerOpen(true);
+  }
 
   async function onCreateCourseHandler() {
     const data = await createCourseForm.validateFields();
@@ -125,10 +133,19 @@ export default function AdminManagedCourseList() {
           </Button>
         }
         dataSource={courses}
-        onItemSelectedHandler={undefined}
+        onItemSelectedHandler={onItemSelectedHandler}
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
       />
+      <GenericDrawer
+        title={course?.title || ""}
+        placement="right"
+        width="100%"
+        open={drawerOpen}
+        onCloseHandler={() => setDrawerOpen(false)}
+      >
+        <div></div>
+      </GenericDrawer>
     </AdminManagedCoursesContext.Provider>
   );
 }

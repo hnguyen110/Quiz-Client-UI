@@ -1,4 +1,4 @@
-import { List } from "antd";
+import { Button, List, Popconfirm, Space } from "antd";
 import Question from "../../../utilities/types/quizzes/question.type";
 import QuizResultAnswer from "../../../utilities/types/quizzes/quiz-result-answer.type";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
@@ -33,6 +33,34 @@ export default function QuizDetails({
       open={open}
       onCloseHandler={onCloseHandler}
       onFinishHandler={onFinishHandler}
+      extra={
+        <Space>
+          <Popconfirm
+            placement="bottomRight"
+            title="Please confirm again that you would like to close this page"
+            onConfirm={onCloseHandler}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger>
+              Cancel
+            </Button>
+          </Popconfirm>
+
+          {/* {onFinishHandler !== undefined ?? (
+
+                     )} */}
+          <Popconfirm
+            placement="bottomRight"
+            title="Please confirm again that you would like to save and submit the quiz"
+            onConfirm={onFinishHandler}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary">Save And Submit</Button>
+          </Popconfirm>
+        </Space>
+      }
     >
       <List
         itemLayout="horizontal"
