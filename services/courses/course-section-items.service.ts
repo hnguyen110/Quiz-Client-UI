@@ -42,3 +42,20 @@ export async function createCourseSectionItem(
   );
   return data;
 }
+
+export async function deleteCourseSectionItem(
+  session: Session,
+  courseId: string | number,
+  sectionId: string | number,
+  itemId: string | number
+): Promise<CourseSectionItem> {
+  const { data } = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/sections/${sectionId}/items/${itemId}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
