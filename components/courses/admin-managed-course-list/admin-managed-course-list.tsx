@@ -11,7 +11,6 @@ import Course from "../../../utilities/types/courses/course.type";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
-import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
 import AdminManagedCourseSectionList from "../admin-managed-course-section-list/admin-managed-course-section-list";
 
 export default function AdminManagedCourseList() {
@@ -57,7 +56,7 @@ export default function AdminManagedCourseList() {
     }
   }
 
-  async function onCancelCreateQuizHandler() {
+  async function onCancelCreateCourseHandler() {
     createCourseForm.resetFields();
     setCreateCourseFormOpen(false);
   }
@@ -69,7 +68,7 @@ export default function AdminManagedCourseList() {
     setUpdateCourseFormOpen(true);
   }
 
-  async function onUpdateQuizHandler() {
+  async function onUpdateCourseHandler() {
     const data = await updateCourseForm.validateFields();
     try {
       const course = await updateCourse(session.data as any, data);
@@ -117,13 +116,13 @@ export default function AdminManagedCourseList() {
         title="Create Course"
         open={createCourseFormOpen}
         onOkHandler={onCreateCourseHandler}
-        onCancelHandler={onCancelCreateQuizHandler}
+        onCancelHandler={onCancelCreateCourseHandler}
       />
-      <AdminManagedQuizForm
+      <AdminManagedCourseForm
         form={updateCourseForm}
         title="Update Course"
         open={updateCourseFormOpen}
-        onOkHandler={onUpdateQuizHandler}
+        onOkHandler={onUpdateCourseHandler}
         onCancelHandler={onCancelUpdateCourseHandler}
       />
       <AdminGenericList

@@ -5,7 +5,10 @@ import Course from "../../../utilities/types/courses/course.type";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import CourseSection from "../../../utilities/types/courses/course-section.type";
-import { getCourseSections } from "../../../services/courses/course-sections.service";
+import {
+  createCourseSection,
+  getCourseSections,
+} from "../../../services/courses/course-sections.service";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 
 interface Props {
@@ -40,6 +43,30 @@ export default function AdminManagedCourseSectionList({
     }
   }, [course?.id, session.data]);
 
+  async function onCreateCourseSectionHandler() {
+    const data = await createCourseSectionForm.validateFields();
+    try {
+      const section = await createCourseSection(
+        session.data as any,
+        course.id,
+        data
+      );
+      setSections([section, ...sections]);
+      createCourseSectionForm.resetFields();
+      setCreateCourseSectionFormOpen(false);
+      message.success("The course section is created successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to create the course section, please try again"
+      );
+    }
+  }
+
+  async function onCancelCreateCourseSectionHandler() {
+    createCourseSectionForm.resetFields();
+    setCreateCourseSectionFormOpen(false);
+  }
+
   return (
     <GenericDrawer
       title={course?.title || ""}
@@ -57,8 +84,8 @@ export default function AdminManagedCourseSectionList({
         form={createCourseSectionForm}
         title="Create Course Section"
         open={createCourseSectionFormOpen}
-        onOkHandler={undefined}
-        onCancelHandler={undefined}
+        onOkHandler={onCreateCourseSectionHandler}
+        onCancelHandler={onCancelCreateCourseSectionHandler}
       />
       <AdminGenericList
         dataSource={sections}
