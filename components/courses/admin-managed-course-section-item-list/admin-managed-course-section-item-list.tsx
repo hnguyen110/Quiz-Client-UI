@@ -9,6 +9,7 @@ import {
   createCourseSectionItem,
   deleteCourseSectionItem,
   getCourseSectionItems,
+  updateCourseSectionItem,
 } from "../../../services/courses/course-section-items.service";
 import CourseSectionItem from "../../../utilities/types/courses/course-section-item.type";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
@@ -29,7 +30,9 @@ export default function AdminManagedCourseSectionItemList({
   const [items, setItems] = useState([] as CourseSectionItem[]);
   const [loading, setLoading] = useState(false);
   const [createItemFormOpen, setCreateItemFormOpen] = useState(false);
+  const [updateItemFormOpen, setUpdateItemFormOpen] = useState(false);
   const [createSectionItemForm] = Form.useForm();
+  const [updateSectionItemForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -75,6 +78,48 @@ export default function AdminManagedCourseSectionItemList({
     setCreateItemFormOpen(false);
   }
 
+  async function onItemSelectedForUpdatingHandler(item: CourseSectionItem) {
+    updateSectionItemForm.setFieldsValue({
+      ...item,
+    });
+    setUpdateItemFormOpen(true);
+  }
+
+  async function onUpdateSectionItemHandler() {
+    const data = await updateSectionItemForm.validateFields();
+    try {
+      const sectionItem = await updateCourseSectionItem(
+        session.data as any,
+        course.id,
+        section.id,
+        data
+      );
+      setItems(
+        items.map((item) => {
+          if (item.id === sectionItem.id) {
+            return {
+              ...sectionItem,
+            };
+          }
+          return item;
+        })
+      );
+      updateSectionItemForm.resetFields();
+      setUpdateItemFormOpen(false);
+      message.success("The course section item is updated successfully");
+    } catch (e) {
+      console.log(e);
+      message.error(
+        "There was an issue while trying to update the course section item, please try again"
+      );
+    }
+  }
+
+  async function onCancelUpdateSectionItemHandler() {
+    updateSectionItemForm.resetFields();
+    setUpdateItemFormOpen(false);
+  }
+
   async function onSectionItemSelectedForDeletingHandler(
     sectionItem: CourseSectionItem
   ) {
@@ -115,10 +160,18 @@ export default function AdminManagedCourseSectionItemList({
         onOkHandler={onCreateSectionItemHandler}
         onCancelHandler={onCancelCreateSectionItemHandler}
       />
+      <AdminManagedCourseSectionItemForm
+        loading={loading}
+        form={updateSectionItemForm}
+        title="Update Section Item"
+        open={updateItemFormOpen}
+        onOkHandler={onUpdateSectionItemHandler}
+        onCancelHandler={onCancelUpdateSectionItemHandler}
+      />
       <AdminGenericList
         dataSource={items}
         onItemSelectedHandler={null}
-        onItemSelectedForUpdatingHandler={null}
+        onItemSelectedForUpdatingHandler={onItemSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={
           onSectionItemSelectedForDeletingHandler
         }

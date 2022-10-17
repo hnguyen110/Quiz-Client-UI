@@ -43,6 +43,31 @@ export async function createCourseSectionItem(
   return data;
 }
 
+export async function updateCourseSectionItem(
+  session: Session,
+  courseId: number | string,
+  sectionId: number | string,
+  item: ModifyCourseSectionItem
+): Promise<CourseSectionItem> {
+  const body = new FormData();
+  body.append("title", item.title);
+  body.append("order", item.order);
+  if (item?.data?.file?.originFileObj) {
+    body.append("data", item.data.file.originFileObj);
+  }
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/sections/${sectionId}/items/${item.id}/`,
+    body,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
 export async function deleteCourseSectionItem(
   session: Session,
   courseId: string | number,
