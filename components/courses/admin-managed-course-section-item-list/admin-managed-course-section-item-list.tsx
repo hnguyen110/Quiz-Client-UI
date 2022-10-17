@@ -2,11 +2,15 @@ import { Button, Form, message } from "antd";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
 import CourseSection from "../../../utilities/types/courses/course-section.type";
 import AdminManagedCourseSectionItemForm from "../admin-managed-course-section-item-form/admin-managed-course-section-item-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Course from "../../../utilities/types/courses/course.type";
-import { createCourseSectionItem } from "../../../services/courses/course-section-items.service";
+import {
+  createCourseSectionItem,
+  getCourseSectionItems,
+} from "../../../services/courses/course-section-items.service";
 import CourseSectionItem from "../../../utilities/types/courses/course-section-item.type";
+import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 
 interface Props {
   course: Course;
@@ -26,6 +30,20 @@ export default function AdminManagedCourseSectionItemList({
   const [createItemFormOpen, setCreateItemFormOpen] = useState(false);
   const [createSectionItemForm] = Form.useForm();
   const session = useSession();
+
+  useEffect(() => {
+    if (course?.id && section?.id) {
+      getCourseSectionItems(session.data as any, course?.id, section?.id)
+        .then((data) => {
+          setItems(data);
+        })
+        .catch((e) => {
+          message.error(
+            "There was an issue while trying to receive your course section items, please try again"
+          );
+        });
+    }
+  }, [course?.id, section?.id, session.data]);
 
   async function onCreateSectionItemHandler() {
     setLoading(true);
@@ -76,6 +94,12 @@ export default function AdminManagedCourseSectionItemList({
         open={createItemFormOpen}
         onOkHandler={onCreateSectionItemHandler}
         onCancelHandler={onCancelCreateSectionItemHandler}
+      />
+      <AdminGenericList
+        dataSource={items}
+        onItemSelectedHandler={null}
+        onItemSelectedForUpdatingHandler={null}
+        onItemSelectedForDeletingHandler={null}
       />
     </GenericDrawer>
   );

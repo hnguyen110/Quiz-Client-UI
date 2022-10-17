@@ -4,6 +4,22 @@ import FormData from "form-data";
 import CourseSectionItem from "../../utilities/types/courses/course-section-item.type";
 import ModifyCourseSectionItem from "../../utilities/types/courses/modify-course-section-item.type";
 
+export async function getCourseSectionItems(
+  session: Session,
+  courseId: number | string,
+  sectionId: number | string
+): Promise<CourseSectionItem[]> {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/sections/${sectionId}/items/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
 export async function createCourseSectionItem(
   session: Session,
   courseId: number | string,
