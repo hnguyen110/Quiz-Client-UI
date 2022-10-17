@@ -13,15 +13,19 @@ import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-cour
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
 import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
 import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
+import AdminManagedCourseSectionForm from "../admin-managed-course-section-form/admin-managed-course-section-form";
 
 export default function AdminManagedCourseList() {
   const [course, setCourse] = useState(null as null | Course);
   const [courses, setCourses] = useState([] as Course[]);
   const [createCourseFormOpen, setCreateCourseFormOpen] = useState(false);
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
+  const [createCourseSectionFormOpen, setCreateCourseSectionFormOpen] =
+    useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
+  const [createCourseSectionForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -143,8 +147,19 @@ export default function AdminManagedCourseList() {
         width="100%"
         open={drawerOpen}
         onCloseHandler={() => setDrawerOpen(false)}
+        extra={
+          <Button onClick={() => setCreateCourseSectionFormOpen(true)}>
+            Create Course Section
+          </Button>
+        }
       >
-        <div></div>
+        <AdminManagedCourseSectionForm
+          form={createCourseSectionForm}
+          title="Create Course Section"
+          open={createCourseSectionFormOpen}
+          onOkHandler={undefined}
+          onCancelHandler={undefined}
+        />
       </GenericDrawer>
     </AdminManagedCoursesContext.Provider>
   );
