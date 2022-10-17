@@ -12,7 +12,7 @@ import {
   updateCourseSection,
 } from "../../../services/courses/course-sections.service";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
-import { deleteCourse } from "../../../services/courses/courses.service";
+import AdminManagedCourseSectionItemList from "../admin-managed-course-section-item-list/admin-managed-course-section-item-list";
 
 interface Props {
   course: Course;
@@ -25,9 +25,11 @@ export default function AdminManagedCourseSectionList({
   open,
   setOpen,
 }: Props) {
+  const [section, setSection] = useState(null as null | CourseSection);
   const [sections, setSections] = useState([] as CourseSection[]);
   const [createSectionFormOpen, setCreateSectionFormOpen] = useState(false);
   const [updateSectionFormOpen, setUpdateSectionFormOpen] = useState(false);
+  const [itemListDrawerOpen, setItemListDrawerOpen] = useState(false);
   const [createCourseSectionForm] = Form.useForm();
   const [updateCourseSectionForm] = Form.useForm();
   const session = useSession();
@@ -36,7 +38,6 @@ export default function AdminManagedCourseSectionList({
     if (course?.id) {
       getCourseSections(session.data as any, course?.id)
         .then((data) => {
-          console.log(data);
           setSections(data);
         })
         .catch((e) => {
@@ -46,6 +47,11 @@ export default function AdminManagedCourseSectionList({
         });
     }
   }, [course?.id, session.data]);
+
+  async function onItemSelectedHandler(data: CourseSection) {
+    setSection(data);
+    setItemListDrawerOpen(true);
+  }
 
   async function onCreateCourseSectionHandler() {
     const data = await createCourseSectionForm.validateFields();
@@ -126,40 +132,47 @@ export default function AdminManagedCourseSectionList({
   }
 
   return (
-    <GenericDrawer
-      title={course?.title || ""}
-      placement="right"
-      width="90%"
-      open={open}
-      onCloseHandler={() => setOpen(false)}
-      extra={
-        <Button onClick={() => setCreateSectionFormOpen(true)}>
-          Create Course Section
-        </Button>
-      }
-    >
-      <AdminManagedCourseSectionForm
-        form={createCourseSectionForm}
-        title="Create Course Section"
-        open={createSectionFormOpen}
-        onOkHandler={onCreateCourseSectionHandler}
-        onCancelHandler={onCancelCreateCourseSectionHandler}
-      />
-      <AdminManagedCourseSectionForm
-        form={updateCourseSectionForm}
-        title="Update Course Section"
-        open={updateSectionFormOpen}
-        onOkHandler={onUpdateCourseSectionHandler}
-        onCancelHandler={onCancelUpdateCourseSectionHandler}
-      />
-      <AdminGenericList
-        dataSource={sections}
-        onItemSelectedHandler={undefined}
-        onItemSelectedForUpdatingHandler={onSectionSelectedForUpdatingHandler}
-        onItemSelectedForDeletingHandler={
-          onCourseSectionSelectedForDeletingHandler
+    <>
+      <GenericDrawer
+        title={course?.title || ""}
+        placement="right"
+        width="95%"
+        open={open}
+        onCloseHandler={() => setOpen(false)}
+        extra={
+          <Button onClick={() => setCreateSectionFormOpen(true)}>
+            Create Course Section
+          </Button>
         }
+      >
+        <AdminManagedCourseSectionForm
+          form={createCourseSectionForm}
+          title="Create Course Section"
+          open={createSectionFormOpen}
+          onOkHandler={onCreateCourseSectionHandler}
+          onCancelHandler={onCancelCreateCourseSectionHandler}
+        />
+        <AdminManagedCourseSectionForm
+          form={updateCourseSectionForm}
+          title="Update Course Section"
+          open={updateSectionFormOpen}
+          onOkHandler={onUpdateCourseSectionHandler}
+          onCancelHandler={onCancelUpdateCourseSectionHandler}
+        />
+        <AdminGenericList
+          dataSource={sections}
+          onItemSelectedHandler={onItemSelectedHandler}
+          onItemSelectedForUpdatingHandler={onSectionSelectedForUpdatingHandler}
+          onItemSelectedForDeletingHandler={
+            onCourseSectionSelectedForDeletingHandler
+          }
+        />
+      </GenericDrawer>
+      <AdminManagedCourseSectionItemList
+        section={section as any}
+        open={itemListDrawerOpen}
+        setOpen={setItemListDrawerOpen}
       />
-    </GenericDrawer>
+    </>
   );
 }
