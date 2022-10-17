@@ -12,20 +12,17 @@ import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-l
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
 import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
-import GenericDrawer from "../../utilities/generic-drawer/generic-drawer";
-import AdminManagedCourseSectionForm from "../admin-managed-course-section-form/admin-managed-course-section-form";
+import AdminManagedCourseSectionList from "../admin-managed-course-section-list/admin-managed-course-section-list";
 
 export default function AdminManagedCourseList() {
   const [course, setCourse] = useState(null as null | Course);
   const [courses, setCourses] = useState([] as Course[]);
   const [createCourseFormOpen, setCreateCourseFormOpen] = useState(false);
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
-  const [createCourseSectionFormOpen, setCreateCourseSectionFormOpen] =
+  const [courseSectionListDrawerOpen, setCourseSectionListDrawerOpen] =
     useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
-  const [createCourseSectionForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -42,7 +39,7 @@ export default function AdminManagedCourseList() {
 
   async function onItemSelectedHandler(data: Course) {
     setCourse(data);
-    setDrawerOpen(true);
+    setCourseSectionListDrawerOpen(true);
   }
 
   async function onCreateCourseHandler() {
@@ -141,26 +138,11 @@ export default function AdminManagedCourseList() {
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
       />
-      <GenericDrawer
-        title={course?.title || ""}
-        placement="right"
-        width="100%"
-        open={drawerOpen}
-        onCloseHandler={() => setDrawerOpen(false)}
-        extra={
-          <Button onClick={() => setCreateCourseSectionFormOpen(true)}>
-            Create Course Section
-          </Button>
-        }
-      >
-        <AdminManagedCourseSectionForm
-          form={createCourseSectionForm}
-          title="Create Course Section"
-          open={createCourseSectionFormOpen}
-          onOkHandler={undefined}
-          onCancelHandler={undefined}
-        />
-      </GenericDrawer>
+      <AdminManagedCourseSectionList
+        course={course as any}
+        open={courseSectionListDrawerOpen}
+        setOpen={setCourseSectionListDrawerOpen}
+      />
     </AdminManagedCoursesContext.Provider>
   );
 }
