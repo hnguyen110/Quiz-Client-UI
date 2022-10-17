@@ -7,10 +7,12 @@ import { useSession } from "next-auth/react";
 import CourseSection from "../../../utilities/types/courses/course-section.type";
 import {
   createCourseSection,
+  deleteCourseSection,
   getCourseSections,
   updateCourseSection,
 } from "../../../services/courses/course-sections.service";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
+import { deleteCourse } from "../../../services/courses/courses.service";
 
 interface Props {
   course: Course;
@@ -109,6 +111,20 @@ export default function AdminManagedCourseSectionList({
     setUpdateSectionFormOpen(false);
   }
 
+  async function onCourseSectionSelectedForDeletingHandler(
+    section: CourseSection
+  ) {
+    try {
+      await deleteCourseSection(session.data as any, course.id, section.id);
+      setSections(sections.filter((item) => item.id !== section.id));
+      message.success("The course section is deleted successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to delete the course section, please try again"
+      );
+    }
+  }
+
   return (
     <GenericDrawer
       title={course?.title || ""}
@@ -140,7 +156,9 @@ export default function AdminManagedCourseSectionList({
         dataSource={sections}
         onItemSelectedHandler={undefined}
         onItemSelectedForUpdatingHandler={onSectionSelectedForUpdatingHandler}
-        onItemSelectedForDeletingHandler={undefined}
+        onItemSelectedForDeletingHandler={
+          onCourseSectionSelectedForDeletingHandler
+        }
       />
     </GenericDrawer>
   );
