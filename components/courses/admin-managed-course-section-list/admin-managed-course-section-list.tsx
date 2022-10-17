@@ -169,6 +169,7 @@ export default function AdminManagedCourseSectionList({
         />
       </GenericDrawer>
       <AdminManagedCourseSectionItemList
+        course={course}
         section={section as any}
         open={itemListDrawerOpen}
         setOpen={setItemListDrawerOpen}

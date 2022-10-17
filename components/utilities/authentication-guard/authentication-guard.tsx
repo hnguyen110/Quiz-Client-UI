@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
-import { Space, Spin } from "antd";
+import GenericSpin from "../generic-spin/generic-spin";
 
 interface Props {
   children: any;
@@ -31,13 +31,5 @@ export default function AuthenticationGuard({ children }: Props) {
       });
   }, [router]);
 
-  return loading ? (
-    <Space className="flex justify-center pt-16" size="middle">
-      <Spin size="small" />
-      <Spin />
-      <Spin size="large" />
-    </Space>
-  ) : (
-    children
-  );
+  return loading ? <GenericSpin /> : children;
 }
