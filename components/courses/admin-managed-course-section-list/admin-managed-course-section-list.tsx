@@ -8,6 +8,7 @@ import CourseSection from "../../../utilities/types/courses/course-section.type"
 import {
   createCourseSection,
   getCourseSections,
+  updateCourseSection,
 } from "../../../services/courses/course-sections.service";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 
@@ -23,9 +24,10 @@ export default function AdminManagedCourseSectionList({
   setOpen,
 }: Props) {
   const [sections, setSections] = useState([] as CourseSection[]);
-  const [createCourseSectionFormOpen, setCreateCourseSectionFormOpen] =
-    useState(false);
+  const [createSectionFormOpen, setCreateSectionFormOpen] = useState(false);
+  const [updateSectionFormOpen, setUpdateSectionFormOpen] = useState(false);
   const [createCourseSectionForm] = Form.useForm();
+  const [updateCourseSectionForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function AdminManagedCourseSectionList({
       );
       setSections([section, ...sections]);
       createCourseSectionForm.resetFields();
-      setCreateCourseSectionFormOpen(false);
+      setCreateSectionFormOpen(false);
       message.success("The course section is created successfully");
     } catch (e) {
       message.error(
@@ -64,18 +66,58 @@ export default function AdminManagedCourseSectionList({
 
   async function onCancelCreateCourseSectionHandler() {
     createCourseSectionForm.resetFields();
-    setCreateCourseSectionFormOpen(false);
+    setCreateSectionFormOpen(false);
+  }
+
+  async function onSectionSelectedForUpdatingHandler(section: CourseSection) {
+    updateCourseSectionForm.setFieldsValue({
+      ...section,
+    });
+    setUpdateSectionFormOpen(true);
+  }
+
+  async function onUpdateCourseSectionHandler() {
+    const data = await updateCourseSectionForm.validateFields();
+    try {
+      const section = await updateCourseSection(
+        session.data as any,
+        course.id,
+        data
+      );
+      setSections(
+        sections.map((item) => {
+          if (item.id === section.id) {
+            return {
+              ...section,
+            };
+          }
+          return item;
+        })
+      );
+      updateCourseSectionForm.resetFields();
+      setUpdateSectionFormOpen(false);
+      message.success("The course section is updated successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to update the course section, please try again"
+      );
+    }
+  }
+
+  async function onCancelUpdateCourseSectionHandler() {
+    updateCourseSectionForm.resetFields();
+    setUpdateSectionFormOpen(false);
   }
 
   return (
     <GenericDrawer
       title={course?.title || ""}
       placement="right"
-      width="100%"
+      width="90%"
       open={open}
       onCloseHandler={() => setOpen(false)}
       extra={
-        <Button onClick={() => setCreateCourseSectionFormOpen(true)}>
+        <Button onClick={() => setCreateSectionFormOpen(true)}>
           Create Course Section
         </Button>
       }
@@ -83,14 +125,21 @@ export default function AdminManagedCourseSectionList({
       <AdminManagedCourseSectionForm
         form={createCourseSectionForm}
         title="Create Course Section"
-        open={createCourseSectionFormOpen}
+        open={createSectionFormOpen}
         onOkHandler={onCreateCourseSectionHandler}
         onCancelHandler={onCancelCreateCourseSectionHandler}
+      />
+      <AdminManagedCourseSectionForm
+        form={updateCourseSectionForm}
+        title="Update Course Section"
+        open={updateSectionFormOpen}
+        onOkHandler={onUpdateCourseSectionHandler}
+        onCancelHandler={onCancelUpdateCourseSectionHandler}
       />
       <AdminGenericList
         dataSource={sections}
         onItemSelectedHandler={undefined}
-        onItemSelectedForUpdatingHandler={undefined}
+        onItemSelectedForUpdatingHandler={onSectionSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={undefined}
       />
     </GenericDrawer>

@@ -34,3 +34,20 @@ export async function createCourseSection(
   );
   return data;
 }
+
+export async function updateCourseSection(
+  session: Session,
+  courseId: number | string,
+  section: CourseSection
+): Promise<Course> {
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/sections/${section.id}/`,
+    section,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
