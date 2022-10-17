@@ -23,6 +23,7 @@ export default function GenericDrawer({
 }: Props) {
   return (
     <Drawer
+      bodyStyle={{ padding: 0 }}
       title={title}
       placement={placement}
       width={width}

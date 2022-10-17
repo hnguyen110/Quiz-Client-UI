@@ -2,7 +2,7 @@ import { Card, Col, List, Row } from "antd";
 import ItemActionsDropdownButton from "./item-actions-dropdown-button";
 
 interface Props {
-  title: string;
+  title?: string;
   extra?: any;
   dataSource: any[];
   onItemSelectedHandler: any;
