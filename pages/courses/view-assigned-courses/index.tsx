@@ -1,3 +1,10 @@
+import AuthenticationGuard from "../../../components/utilities/authentication-guard/authentication-guard";
+import AssignedCourseList from "../../../components/courses/assigned-course-list/assigned-course-list";
+
 export default function Index() {
-  return <div></div>;
+  return (
+    <AuthenticationGuard>
+      <AssignedCourseList />
+    </AuthenticationGuard>
+  );
 }
