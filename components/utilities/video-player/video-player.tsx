@@ -1,4 +1,4 @@
-import { DefaultUi, Player, Video, Settings } from "@vime/react";
+import { DefaultUi, Player, Video } from "@vime/react";
 
 interface Props {
   id: string | number;
