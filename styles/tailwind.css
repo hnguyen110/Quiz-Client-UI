@@ -145,10 +145,6 @@
   visibility: visible;
 }
 
-.static{
-  position: static;
-}
-
 .absolute{
   position: absolute;
 }
@@ -208,10 +204,6 @@
 
 .pt-12{
   padding-top: 3rem;
-}
-
-.pt-16{
-  padding-top: 4rem;
 }
 
 .filter{

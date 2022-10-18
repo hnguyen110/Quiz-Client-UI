@@ -65,6 +65,14 @@ export default function Sidebar() {
       children: [
         {
           key: 9,
+          label: (
+            <Link href="/courses/view-assigned-courses">
+              View Assigned Courses
+            </Link>
+          ),
+        },
+        {
+          key: 10,
           label: <Link href="/courses/manage-courses">Manage Courses</Link>,
         },
       ],
