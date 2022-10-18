@@ -99,6 +99,7 @@ export default function AdminManagedCourseSectionItemList({
   }
 
   async function onUpdateSectionItemHandler() {
+    setLoading(true);
     const data = await updateSectionItemForm.validateFields();
     try {
       const sectionItem = await updateCourseSectionItem(
@@ -125,6 +126,8 @@ export default function AdminManagedCourseSectionItemList({
       message.error(
         "There was an issue while trying to update the course section item, please try again"
       );
+    } finally {
+      setLoading(false);
     }
   }
 
