@@ -11,12 +11,15 @@ import Course from "../../../utilities/types/courses/course.type";
 import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-list";
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
-import AdminManagedQuizForm from "../../quizzes/admin-managed-quiz-form/admin-managed-quiz-form";
+import AdminManagedCourseSectionList from "../admin-managed-course-section-list/admin-managed-course-section-list";
 
 export default function AdminManagedCourseList() {
+  const [course, setCourse] = useState(null as null | Course);
   const [courses, setCourses] = useState([] as Course[]);
   const [createCourseFormOpen, setCreateCourseFormOpen] = useState(false);
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
+  const [courseSectionListDrawerOpen, setCourseSectionListDrawerOpen] =
+    useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
   const session = useSession();
@@ -33,6 +36,11 @@ export default function AdminManagedCourseList() {
       });
   }, [session.data]);
 
+  async function onItemSelectedHandler(data: Course) {
+    setCourse(data);
+    setCourseSectionListDrawerOpen(true);
+  }
+
   async function onCreateCourseHandler() {
     const data = await createCourseForm.validateFields();
     try {
@@ -48,7 +56,7 @@ export default function AdminManagedCourseList() {
     }
   }
 
-  async function onCancelCreateQuizHandler() {
+  async function onCancelCreateCourseHandler() {
     createCourseForm.resetFields();
     setCreateCourseFormOpen(false);
   }
@@ -60,7 +68,7 @@ export default function AdminManagedCourseList() {
     setUpdateCourseFormOpen(true);
   }
 
-  async function onUpdateQuizHandler() {
+  async function onUpdateCourseHandler() {
     const data = await updateCourseForm.validateFields();
     try {
       const course = await updateCourse(session.data as any, data);
@@ -108,13 +116,13 @@ export default function AdminManagedCourseList() {
         title="Create Course"
         open={createCourseFormOpen}
         onOkHandler={onCreateCourseHandler}
-        onCancelHandler={onCancelCreateQuizHandler}
+        onCancelHandler={onCancelCreateCourseHandler}
       />
-      <AdminManagedQuizForm
+      <AdminManagedCourseForm
         form={updateCourseForm}
         title="Update Course"
         open={updateCourseFormOpen}
-        onOkHandler={onUpdateQuizHandler}
+        onOkHandler={onUpdateCourseHandler}
         onCancelHandler={onCancelUpdateCourseHandler}
       />
       <AdminGenericList
@@ -125,9 +133,14 @@ export default function AdminManagedCourseList() {
           </Button>
         }
         dataSource={courses}
-        onItemSelectedHandler={undefined}
+        onItemSelectedHandler={onItemSelectedHandler}
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
+      />
+      <AdminManagedCourseSectionList
+        course={course as any}
+        open={courseSectionListDrawerOpen}
+        setOpen={setCourseSectionListDrawerOpen}
       />
     </AdminManagedCoursesContext.Provider>
   );
