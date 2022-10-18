@@ -27,12 +27,16 @@ export default function AdminManagedCourseSectionItemList({
   open,
   setOpen,
 }: Props) {
+  const [item, setItem] = useState(null as null | CourseSectionItem);
   const [items, setItems] = useState([] as CourseSectionItem[]);
   const [loading, setLoading] = useState(false);
   const [createItemFormOpen, setCreateItemFormOpen] = useState(false);
   const [updateItemFormOpen, setUpdateItemFormOpen] = useState(false);
+  const [readonlyItemFormOpen, setReadonlyItemFormOpen] = useState(false);
+  const [readonly, setReadonly] = useState(false);
   const [createSectionItemForm] = Form.useForm();
   const [updateSectionItemForm] = Form.useForm();
+  const [readonlyItemForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -48,6 +52,15 @@ export default function AdminManagedCourseSectionItemList({
         });
     }
   }, [course?.id, section?.id, session.data]);
+
+  async function onItemSelectedHandler(data: CourseSectionItem) {
+    setItem(data);
+    readonlyItemForm.setFieldsValue({
+      ...data,
+    });
+    setReadonly(true);
+    setReadonlyItemFormOpen(true);
+  }
 
   async function onCreateSectionItemHandler() {
     setLoading(true);
@@ -139,6 +152,12 @@ export default function AdminManagedCourseSectionItemList({
     }
   }
 
+  async function onCancelReadonlySectionItemFormHandler() {
+    readonlyItemForm.resetFields();
+    setReadonly(false);
+    setReadonlyItemFormOpen(false);
+  }
+
   return (
     <GenericDrawer
       title={section?.title || ""}
@@ -168,9 +187,17 @@ export default function AdminManagedCourseSectionItemList({
         onOkHandler={onUpdateSectionItemHandler}
         onCancelHandler={onCancelUpdateSectionItemHandler}
       />
+      <AdminManagedCourseSectionItemForm
+        form={readonlyItemForm}
+        title="View Section Item"
+        open={readonlyItemFormOpen}
+        onCancelHandler={onCancelReadonlySectionItemFormHandler}
+        readonly={readonly}
+        item={item}
+      />
       <AdminGenericList
         dataSource={items}
-        onItemSelectedHandler={null}
+        onItemSelectedHandler={onItemSelectedHandler}
         onItemSelectedForUpdatingHandler={onItemSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={
           onSectionItemSelectedForDeletingHandler

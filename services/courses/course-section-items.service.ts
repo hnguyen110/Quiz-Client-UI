@@ -20,6 +20,23 @@ export async function getCourseSectionItems(
   return data;
 }
 
+export async function getCourseSectionItem(
+  session: Session,
+  courseId: number | string,
+  sectionId: number | string,
+  itemId: string | number
+): Promise<CourseSectionItem> {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${courseId}/sections/${sectionId}/items/${itemId}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
 export async function createCourseSectionItem(
   session: Session,
   courseId: number | string,
