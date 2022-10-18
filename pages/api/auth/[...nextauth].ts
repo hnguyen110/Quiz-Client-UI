@@ -5,6 +5,9 @@ import decoder from "jwt-decode";
 import * as https from "https";
 
 export default NextAuth({
+  session: {
+    maxAge: 60 * 60,
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
