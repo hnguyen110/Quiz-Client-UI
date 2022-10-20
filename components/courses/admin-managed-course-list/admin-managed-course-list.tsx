@@ -12,6 +12,7 @@ import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-l
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
 import AdminManagedCourseSectionList from "../admin-managed-course-section-list/admin-managed-course-section-list";
+import AdminManagedCourseParticipantForm from "../admin-managed-course-participant-form/admin-managed-course-participant-form";
 
 export default function AdminManagedCourseList() {
   const [course, setCourse] = useState(null as null | Course);
@@ -20,8 +21,10 @@ export default function AdminManagedCourseList() {
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
   const [courseSectionListDrawerOpen, setCourseSectionListDrawerOpen] =
     useState(false);
+  const [participantsFormOpen, setParticipantsFormOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
+  const [participantsForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -109,6 +112,15 @@ export default function AdminManagedCourseList() {
     }
   }
 
+  async function onCourseSelectedForAssigningParticipants(course: Course) {
+    setParticipantsFormOpen(true);
+  }
+
+  async function onCancelAssignParticipantsToCourseHandler() {
+    participantsForm.resetFields();
+    setParticipantsFormOpen(false);
+  }
+
   return (
     <AdminManagedCoursesContext.Provider value={{ courses, setCourses }}>
       <AdminManagedCourseForm
@@ -125,6 +137,13 @@ export default function AdminManagedCourseList() {
         onOkHandler={onUpdateCourseHandler}
         onCancelHandler={onCancelUpdateCourseHandler}
       />
+      <AdminManagedCourseParticipantForm
+        form={participantsForm}
+        title="Assign Participants"
+        open={participantsFormOpen}
+        onOkHandler={null}
+        onCancelHandler={onCancelAssignParticipantsToCourseHandler}
+      />
       <AdminGenericList
         title={"Manage Courses"}
         extra={
@@ -136,6 +155,9 @@ export default function AdminManagedCourseList() {
         onItemSelectedHandler={onItemSelectedHandler}
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
+        onItemSelectedForAssigningHandler={
+          onCourseSelectedForAssigningParticipants
+        }
       />
       <AdminManagedCourseSectionList
         course={course as any}
