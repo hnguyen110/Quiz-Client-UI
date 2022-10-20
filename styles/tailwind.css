@@ -185,26 +185,6 @@
     width: 100%;
 }
 
-.w-60 {
-    width: 15rem;
-}
-
-.w-72 {
-    width: 18rem;
-}
-
-.max-w-md {
-    max-width: 28rem;
-}
-
-.max-w-3xl {
-    max-width: 48rem;
-}
-
-.max-w-lg {
-    max-width: 32rem;
-}
-
 .justify-center {
     justify-content: center;
 }
@@ -217,21 +197,14 @@
     padding: 4rem;
 }
 
-.p-2 {
-    padding: 0.5rem;
-}
-
-.p-4 {
-    padding: 1rem;
-}
-
-.p-8 {
-    padding: 2rem;
-}
-
 .px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+}
+
+.px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .pt-12 {

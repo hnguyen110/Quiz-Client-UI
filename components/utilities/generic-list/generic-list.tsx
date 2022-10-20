@@ -37,7 +37,11 @@ export default function GenericList({
                 ]}
               >
                 <List.Item.Meta
-                  title={<a>{item.title}</a>}
+                  title={
+                    <a onClick={() => onItemSelectedHandler(item)}>
+                      {item.title}
+                    </a>
+                  }
                   description={item.description}
                 />
               </List.Item>
