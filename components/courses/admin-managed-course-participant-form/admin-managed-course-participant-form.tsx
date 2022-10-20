@@ -1,5 +1,11 @@
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance, Input, message, Select } from "antd";
 import GenericModal from "../../utilities/generic-modal/generic-modal";
+import { useEffect, useState } from "react";
+import User from "../../../utilities/types/account/user.type";
+import { getUsers } from "../../../services/account/account.service";
+import { useSession } from "next-auth/react";
+
+const { Option } = Select;
 
 interface Props {
   form: FormInstance<any>;
@@ -16,6 +22,21 @@ export default function AdminManagedCourseParticipantForm({
   onOkHandler,
   onCancelHandler,
 }: Props) {
+  const [users, setUsers] = useState([] as User[]);
+  const session = useSession();
+
+  useEffect(() => {
+    getUsers(session.data as any)
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((e) => {
+        message.error(
+          "There was an issue while trying to retrieve user information list, please try again"
+        );
+      });
+  }, [session.data]);
+
   return (
     <GenericModal
       title={title}
@@ -27,13 +48,15 @@ export default function AdminManagedCourseParticipantForm({
         <Form.Item hidden name="id">
           <Input />
         </Form.Item>
-        <Form.Item
-          hasFeedback
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "This field can not be empty" }]}
-        >
-          <Input placeholder="Please enter the course section title" />
+        <Form.Item hasFeedback label="Participants" name="participants">
+          <Select
+            options={users.map((item) => {
+              return { value: item.id, label: item.username };
+            })}
+            mode="multiple"
+            allowClear
+            placeholder="Please select the course participants"
+          />
         </Form.Item>
       </Form>
     </GenericModal>

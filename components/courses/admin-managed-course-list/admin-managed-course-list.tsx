@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import {
+  assignCourseParticipants,
   createCourse,
   deleteCourse,
   getAdministratorManagedCourses,
+  getCourseParticipants,
   updateCourse,
 } from "../../../services/courses/courses.service";
 import { useSession } from "next-auth/react";
@@ -113,7 +115,39 @@ export default function AdminManagedCourseList() {
   }
 
   async function onCourseSelectedForAssigningParticipants(course: Course) {
-    setParticipantsFormOpen(true);
+    try {
+      const participants = await getCourseParticipants(
+        session.data as any,
+        course.id
+      );
+      participantsForm.setFieldsValue({
+        ...course,
+        participants: participants.map((item) => item.user),
+      });
+      setParticipantsFormOpen(true);
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to retrieve the list of course participants, please try again"
+      );
+    }
+  }
+
+  async function onAssignCourseParticipants() {
+    const data = await participantsForm.validateFields();
+    try {
+      await assignCourseParticipants(
+        session.data as any,
+        data.id,
+        data.participants
+      );
+      participantsForm.resetFields();
+      setParticipantsFormOpen(false);
+      message.success("The course participants is updated successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to update the course participants, please try again"
+      );
+    }
   }
 
   async function onCancelAssignParticipantsToCourseHandler() {
@@ -141,7 +175,7 @@ export default function AdminManagedCourseList() {
         form={participantsForm}
         title="Assign Participants"
         open={participantsFormOpen}
-        onOkHandler={null}
+        onOkHandler={onAssignCourseParticipants}
         onCancelHandler={onCancelAssignParticipantsToCourseHandler}
       />
       <AdminGenericList

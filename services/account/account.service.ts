@@ -1,6 +1,7 @@
 import axios from "axios";
 import Profile from "../../utilities/types/profile-information/profile-information";
 import Session from "../../utilities/types/utilities/session.type";
+import User from "../../utilities/types/account/user.type";
 
 export async function getProfileInformation(
   session: Session
@@ -45,4 +46,16 @@ export async function confirmPasswordChange(
       },
     }
   );
+}
+
+export async function getUsers(session: Session): Promise<User[]> {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/users/`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
 }
