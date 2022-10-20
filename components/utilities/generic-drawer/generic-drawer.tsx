@@ -29,7 +29,7 @@ export default function GenericDrawer({
       width={width}
       open={open}
       onClose={onCloseHandler}
-      mask={false}
+      mask={true}
       getContainer={false}
       className="absolute"
       extra={extra}
