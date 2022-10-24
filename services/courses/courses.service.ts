@@ -3,6 +3,7 @@ import Course from "../../utilities/types/courses/course.type";
 import axios from "axios";
 import CourseParticipant from "../../utilities/types/courses/course-participant.type";
 import AssignedCourseParticipant from "../../utilities/types/courses/assigned-course-participant.type";
+import Card from "../../utilities/types/payment/card";
 
 export async function getAdministratorManagedCourses(
   session: Session
@@ -92,6 +93,23 @@ export async function getCourseParticipants(
 ): Promise<AssignedCourseParticipant[]> {
   const { data } = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${id}/participants`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.access}`,
+      },
+    }
+  );
+  return data;
+}
+
+export async function checkoutCourse(
+  session: Session,
+  id: string | number,
+  card: Card
+) {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/${id}/checkout/`,
+    card,
     {
       headers: {
         Authorization: `Bearer ${session.access}`,
