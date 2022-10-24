@@ -8,6 +8,7 @@ interface Props {
   onItemSelectedHandler: any;
   onItemSelectedForUpdatingHandler: any;
   onItemSelectedForDeletingHandler: any;
+  onItemSelectedForAssigningHandler?: any;
 }
 
 export default function AdminGenericList({
@@ -17,6 +18,7 @@ export default function AdminGenericList({
   onItemSelectedHandler,
   onItemSelectedForUpdatingHandler,
   onItemSelectedForDeletingHandler,
+  onItemSelectedForAssigningHandler,
 }: Props) {
   return (
     <Card
@@ -43,11 +45,18 @@ export default function AdminGenericList({
                     onItemSelectedForDeletingHandler={
                       onItemSelectedForDeletingHandler
                     }
+                    onItemSelectedForAssigningHandler={
+                      onItemSelectedForAssigningHandler
+                    }
                   />,
                 ]}
               >
                 <List.Item.Meta
-                  title={<a>{item.title}</a>}
+                  title={
+                    <a onClick={() => onItemSelectedHandler(item)}>
+                      {item.title}
+                    </a>
+                  }
                   description={item.description}
                 />
               </List.Item>

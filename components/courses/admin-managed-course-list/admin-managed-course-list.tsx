@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import {
+  assignCourseParticipants,
   createCourse,
   deleteCourse,
   getAdministratorManagedCourses,
+  getCourseParticipants,
   updateCourse,
 } from "../../../services/courses/courses.service";
 import { useSession } from "next-auth/react";
@@ -12,6 +14,7 @@ import AdminGenericList from "../../utilities/admin-generic-list/admin-generic-l
 import { AdminManagedCoursesContext } from "../../../contexts/admin-managed-courses.context";
 import AdminManagedCourseForm from "../admin-managed-course-form/admin-managed-course-form";
 import AdminManagedCourseSectionList from "../admin-managed-course-section-list/admin-managed-course-section-list";
+import AdminManagedCourseParticipantForm from "../admin-managed-course-participant-form/admin-managed-course-participant-form";
 
 export default function AdminManagedCourseList() {
   const [course, setCourse] = useState(null as null | Course);
@@ -20,8 +23,10 @@ export default function AdminManagedCourseList() {
   const [updateCourseFormOpen, setUpdateCourseFormOpen] = useState(false);
   const [courseSectionListDrawerOpen, setCourseSectionListDrawerOpen] =
     useState(false);
+  const [participantsFormOpen, setParticipantsFormOpen] = useState(false);
   const [createCourseForm] = Form.useForm();
   const [updateCourseForm] = Form.useForm();
+  const [participantsForm] = Form.useForm();
   const session = useSession();
 
   useEffect(() => {
@@ -109,6 +114,47 @@ export default function AdminManagedCourseList() {
     }
   }
 
+  async function onCourseSelectedForAssigningParticipants(course: Course) {
+    try {
+      const participants = await getCourseParticipants(
+        session.data as any,
+        course.id
+      );
+      participantsForm.setFieldsValue({
+        ...course,
+        participants: participants.map((item) => item.user),
+      });
+      setParticipantsFormOpen(true);
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to retrieve the list of course participants, please try again"
+      );
+    }
+  }
+
+  async function onAssignCourseParticipants() {
+    const data = await participantsForm.validateFields();
+    try {
+      await assignCourseParticipants(
+        session.data as any,
+        data.id,
+        data.participants
+      );
+      participantsForm.resetFields();
+      setParticipantsFormOpen(false);
+      message.success("The course participants is updated successfully");
+    } catch (e) {
+      message.error(
+        "There was an issue while trying to update the course participants, please try again"
+      );
+    }
+  }
+
+  async function onCancelAssignParticipantsToCourseHandler() {
+    participantsForm.resetFields();
+    setParticipantsFormOpen(false);
+  }
+
   return (
     <AdminManagedCoursesContext.Provider value={{ courses, setCourses }}>
       <AdminManagedCourseForm
@@ -125,6 +171,13 @@ export default function AdminManagedCourseList() {
         onOkHandler={onUpdateCourseHandler}
         onCancelHandler={onCancelUpdateCourseHandler}
       />
+      <AdminManagedCourseParticipantForm
+        form={participantsForm}
+        title="Assign Participants"
+        open={participantsFormOpen}
+        onOkHandler={onAssignCourseParticipants}
+        onCancelHandler={onCancelAssignParticipantsToCourseHandler}
+      />
       <AdminGenericList
         title={"Manage Courses"}
         extra={
@@ -136,6 +189,9 @@ export default function AdminManagedCourseList() {
         onItemSelectedHandler={onItemSelectedHandler}
         onItemSelectedForUpdatingHandler={onCourseSelectedForUpdatingHandler}
         onItemSelectedForDeletingHandler={onCourseSelectedForDeletingHandler}
+        onItemSelectedForAssigningHandler={
+          onCourseSelectedForAssigningParticipants
+        }
       />
       <AdminManagedCourseSectionList
         course={course as any}

@@ -83,7 +83,7 @@ export default function AssignedCourseDetails({
     <GenericDrawer
       title={course?.title || ""}
       placement="right"
-      width="95%"
+      width="100%"
       open={open}
       onCloseHandler={() => {
         setPaused(true);

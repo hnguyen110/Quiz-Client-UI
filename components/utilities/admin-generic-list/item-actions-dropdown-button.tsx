@@ -7,6 +7,7 @@ interface Props {
   onItemSelectedHandler: any;
   onItemSelectedForUpdatingHandler: any;
   onItemSelectedForDeletingHandler: any;
+  onItemSelectedForAssigningHandler?: any;
 }
 
 export default function ItemActionsDropdownButton({
@@ -14,6 +15,7 @@ export default function ItemActionsDropdownButton({
   onItemSelectedHandler,
   onItemSelectedForUpdatingHandler,
   onItemSelectedForDeletingHandler,
+  onItemSelectedForAssigningHandler = null,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -58,6 +60,13 @@ export default function ItemActionsDropdownButton({
               key: "3",
               onClick: () => onItemSelectedHandler(item),
             },
+            onItemSelectedForAssigningHandler === null
+              ? null
+              : {
+                  label: "Assign Participants",
+                  key: "4",
+                  onClick: () => onItemSelectedForAssigningHandler(item),
+                },
           ]}
         />
       }

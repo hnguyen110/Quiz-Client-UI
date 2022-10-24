@@ -3,6 +3,8 @@ import { Modal } from "antd";
 interface Props {
   title: string;
   open: boolean;
+  footer?: any;
+  confirmLoading?: boolean;
   onOkHandler: any;
   onCancelHandler: any;
   children: any;
@@ -11,6 +13,8 @@ interface Props {
 export default function GenericModal({
   title,
   open,
+  footer,
+  confirmLoading,
   onOkHandler,
   onCancelHandler,
   children,
@@ -19,6 +23,8 @@ export default function GenericModal({
     <Modal
       title={title}
       open={open}
+      footer={footer}
+      confirmLoading={confirmLoading}
       onOk={onOkHandler}
       onCancel={onCancelHandler}
     >

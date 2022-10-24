@@ -17,7 +17,7 @@ export default function QuizQuestion({
   selectedSolutions = [],
 }: Props) {
   return (
-    <Space direction="vertical" className="w-full">
+    <Space direction="vertical" className="w-full px-8">
       <Typography.Text strong>{question.description}</Typography.Text>
       {resultOnly ? (
         <QuizQuestionResult
